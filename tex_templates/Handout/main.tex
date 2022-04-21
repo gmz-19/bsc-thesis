@@ -1,0 +1,359 @@
+% Handout für den LaTeX-Basiskurs an der Universitätsbibliothek Stuttgart
+% Stefan Drößler, Dezember 2020
+% E-Mail: stefan.droessler@ub.uni-stuttgart.de
+
+\documentclass[11pt,a4paper]{scrartcl}
+% scrartcl ist eine Artikel-Klasse im Koma-Skript
+% zur Kontrolle des Umbruchs Klassenoption draft verwenden
+% Die folgenden Pakete erlauben den Gebrauch von Umlauten und ß:
+\usepackage[utf8]{inputenc}
+% alternativ unter Windows:
+% \usepackage[latin1]{inputenc} 
+\usepackage[T1]{fontenc}
+% Die Spezifikation ngerman im Sprachpaket babel lädt die neue deutsche 
+% Rechtschreibung
+\usepackage[ngerman]{babel}
+% Verwendung der im Deutschen üblichen Anführungszeiten
+\usepackage[babel,german=quotes]{csquotes}
+% Einbinden von Grafiken (pdf jpg png)
+\usepackage[pdftex]{graphicx}
+
+% Standardpakete für mathematische Darstellungen: Zeichen, Formeln, 
+% Gleichungen usw.
+\usepackage{amsmath,amssymb,amsthm}
+
+% Elf zusätzliche mathematische Symbole
+\usepackage{latexsym}
+
+% URLs in das Dokument einbinden
+\usepackage{hyperref}
+% Metadaten editieren
+\hypersetup{
+pdftitle={Schnelleinstieg in das Textsatzsystem LaTeX},
+pdfsubject={LaTeX},
+pdfauthor={Stefan Drößler, Universitätsbibliothek Stuttgart},
+pdfkeywords={wissenschaftliches Schreiben}
+}
+% Zeilenumbruch für lange URLs
+% \usepackage[anythingbreaks]{breakurl}
+
+% Darstellung von Quellcode mit Syntaxhervorhebung
+% \begin{lstlisting}
+% Put your code here.
+% \end{lstlisting}
+\usepackage{listings}
+\lstset{numbers=left,
+	numberstyle=\small,
+	numbersep=5pt,
+	breaklines=true,
+	showstringspaces=false,
+	frame=1 ,
+	xleftmargin=15pt,
+	xrightmargin=15pt,
+	basicstyle=\ttfamily\scriptsize,
+	stepnumber=1,
+	keywordstyle=\color{ao}\textbf,          % keyword style
+  	commentstyle=\color{gray},       % comment style
+  	stringstyle=\color{mauve}         % string literal style
+}
+\lstloadlanguages{TeX}
+
+% Definition von Farben, die bei der Darstellung von Quellcode über das listings-Paket Anwendung finden
+\usepackage{color}
+\definecolor{ao}{rgb}{0.0,0.0,1.0}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+% BibLaTeX zur Einbindung von Literaturdatenbank und Referenzierung
+\usepackage[backend=biber]{biblatex} %biblatex mit biber laden
+\ExecuteBibliographyOptions{
+sorting=nyt, %Sortierung Autor, Titel, Jahr
+bibwarn=true, %Probleme mit den Daten, die Backend betreffen anzeigen
+isbn=false, %keine isbn anzeigen
+url=false %keine url anzeigen
+}
+\addbibresource{literatur.bib} %Bibliografiedateien laden
+
+% Der Abstand der oberen Blattkante zur Kopfzeile ist 2.54cm - 10mm
+\setlength{\topmargin}{-10mm}
+
+\begin{document}
+% Spezifikation der Sprache für die Syntaxhervorhebung des listings-Pakets
+\lstset{language=tex}
+  % Keine Seitenzahlen im Vorspann
+  \pagestyle{empty}
+
+  % Titelblatt der Arbeit
+  \begin{titlepage}
+    
+    \center
+    \includegraphics[scale=0.5]{ub-logo} 
+    \vspace*{2cm} 
+
+ \begin{center} \large 
+        
+    \vspace*{2cm}
+
+    {\huge \textbf{Schnelleinstieg in das\\ Textsatzsystem \LaTeX}}
+    \vspace*{2.5cm}
+
+    Handout
+    \vspace*{1.5cm}
+
+    WS 2020/21
+    \vspace*{4.5cm}
+
+  \normalsize
+    Stefan Drößler, M.\,A. \\[1cm]
+    E-Mail: 
+\href{mailto:stefan.droessler@ub.uni-stuttgart.de}{
+stefan.droessler@ub.uni-stuttgart.de} \\[1cm]
+  \end{center}
+\end{titlepage}
+
+
+  % Inhaltsverzeichnis
+  \tableofcontents
+  
+\newpage
+
+  % Ab sofort Seitenzahlen in der Kopfzeile anzeigen
+  \pagestyle{headings}
+
+\section*{Einleitung}
+\LaTeX (sprich Latech) ist entwickelt worden, um mathematische und chemische 
+Formeln typografisch ansprechend in wissenschaftlichen Texten einzubetten. 
+Inzwischen wird \LaTeX\ auch in den Geistes- und Sozialwissenschaften genutzt. 
+\LaTeX\ ist keine Textverarbeitung, die nach dem Prinzip von 
+What-you-see-is-what-you-get funktioniert. Vielmehr werden nach der Installation 
+über einschlägige, leicht erlernbare Befehle (logisches Markup) beim 
+Kompilieren Makros aufgerufen und damit der Text gesetzt. Das System ist 
+kostenfrei auf unterschiedlichen Betriebssystemen installierbar und wird über 
+einen Editor oder auf Kommandozeilenebene bedient.
+
+\LaTeX\ ist besonders geeignet für alle, die
+\begin{itemize}
+ \item mit Formeln arbeiten,
+ \item komplexere Dokumente erstellen wollen (Bachelor-, Master-, 
+Doktorarbeiten),
+  \item vom Institut \LaTeX-Vorlagen bekommen,
+  \item typografisch ansprechende Dokumente erstellen wollen,
+  \item Lust haben, sich mit alternativen Wegen des Schreibens zu befassen.
+\end{itemize}
+
+Im Einführungskurs wird \LaTeX\ mit dem Online-Tool Overleaf demonstriert. 
+Overleaf eignet sich für alle, die \LaTeX\ zunächst nur testen wollen oder 
+Dokumente mit anderen teilen wollen. 
+
+Für diejenigen, die \LaTeX\ lokal auf ihrem Rechner verwenden wollen, 
+empfiehlt es sich, \LaTeX\ vollständig zu installieren. 
+So müssen später eventuell notwendige Pakete zur Erweiterung des 
+Funktionsumfangs nicht nachinstalliert werden.
+
+\section{Präambel und Dokumentklassen}
+In der Präambel werden bei \LaTeX\ die Dokumentvorgaben definiert. In der Regel 
+wird man Vorlagen verwenden, die es im Internet frei zum Download gibt oder die 
+die Editoren anbieten. Teilweise werden von den Instituten auch Vorlagen 
+angeboten, manchmal sind sie sogar für Abschlussarbeiten verbindlich. 
+
+Beispiel für eine Minimal-Präambel, die der Editor Kile für 
+die Dokumentklasse Artikel anbietet:
+\lstset{language=[LaTeX]TeX, basicstyle=\small, frame=single}
+\begin{lstlisting}[firstnumber=auto]
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+%opening
+\title{}
+\author{}
+\begin{document}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\section{}
+\end{document}
+\end{lstlisting}
+
+Neben \textbf{article}, \textbf{report}, \textbf{book}, \textbf{letter} und 
+\textbf{beamer} gibt es viele weitere Dokumentklassen, die sich auch 
+individuell definieren lassen. \\
+\\
+Für die in Europa übliche Typografie und 
+DIN-Formate wurde \href{https://komascript.de/}{KOMA-Script}, eine Sammlung 
+von Paketen und Klassen, entwickelt. Ein Minimalbeispiel einer Vorlage für 
+die Dokumentklasse Artikel sieht zum Beispiel so aus: 
+
+\begin{lstlisting}[firstnumber=auto]
+\documentclass[a4paper,10pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+%opening
+\title{}
+\author{}
+\begin{document}
+\maketitle
+\begin{abstract}
+\end{abstract}
+\section{}
+\end{document}
+\end{lstlisting}
+
+\section{Einfache Formatierungs- und Gliederungsmöglichkeiten}
+Die Formatierungs- und Gliederungsmöglichkeiten für den Text lässt sich schnell im Internet recherchieren oder in der einschlägigen \LaTeX-Literatur.\footfullcite[13]{oechsner2015}:
+\begin{verbatim}
+ \textbf{fettet den Text}
+ \textit{setzt den Text kursiv}
+ \textsc{setzt den Text in Kapitälchen}
+ \small{verkleinert den Text in small-Format}
+ \large{vergrößert den Text auf large-Format}
+\end{verbatim}
+
+Zeilenumbruch:
+
+\begin{tabular}{|l|l|}
+\hline
+  \lstinline!\\ genauso: \newline! & harter Zeilenumbruch \\
+  \hline
+  \lstinline!\newpage! & manueller Seitenumbruch\\
+  \hline
+ \end{tabular}
+
+\section{Gleitobjekte}
+Im Folgenden werden die Gleitumgebungen \emph{table} für Tabellen und \emph{figure} für Grafiken vorgestellt. Diese Gleitobjekte werden, wenn nicht näher spezifiziert, beim Kompilieren automatisch an denen für das Layout besten Stellen platziert. Aus verschiedenen Gründen will man aber in der Regel auf die Platzierung Einfluss nehmen. Die dafür notwendigen Parameter werden in eckige Klammern gesetzt in der Form:\\
+\\
+\begin{tabular}{l|l|l}
+  \textbf{h} & für \textit{here} & an aktueller Stelle \\
+  \hline
+  \textbf{t} & für \textit{top} & oben auf der Seite \\
+  \textbf{b} & für \textit{bottom} & unten auf der Seite \\
+  \textbf{p} & für \textit{page} & auf einer eigenen Seite
+ \end{tabular}
+
+\subsection{Tabellen}
+Einfache Tabellen werden mit dem tabular-Paket in der Präambel eingebunden und die Tabellen im Text in eine entsprechende Umgebung gesetzt:
+\begin{verbatim}
+\begin{table}[h]
+ \begin{tabular}{|l|c|r|}
+  Spalte 1 & Spalte 2 & Spalte 3 \\
+  \hline
+  \hline
+  1 & 2 & 3 \\
+ \end{tabular}
+\end{table}
+\end{verbatim}
+Das senkrechte Zeichen ("Vertical Bar") in der Tabellenspezifikation fügt Spaltenlinien ein, der Befehl hline erzeugt eine oder mehrere Zeilenlinien. Die Spezifikation l positioniert den Tabelleninhalt links, c steht für center (zentriert), r für rechts, die Zellen werden mit dem \&-Zeichen getrennt und müssen mit der für die Tabellenumgebung definierten Spaltenzahl korrespondieren. 
+
+\begin{table}[h]
+ \centering 
+ \caption{BESCHREIBUNG}
+ \begin{tabular}{|l|c|r|}
+ \hline
+  Spalte 1 & Spalte 2 & Spalte 3 \\
+  \hline
+  \hline
+  1 & 2 & 3 \\
+  \hline
+ \end{tabular}
+ \label{tab:meinetabelle}
+ \end{table}
+ 
+\subsection{Grafiken}
+Für die Einbindung von externen Grafiken wird in der Präambel das Paket graphicx einkommentiert. 
+\begin{lstlisting}[firstnumber=auto]
+\begin{figure}[h!]
+	\centering
+	\includegraphics{ub-logo}
+	\caption{Logo der UB Stuttgart}
+	\label{img:ub-logo}
+\end{figure}
+\end{lstlisting}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=8cm]{ub-logo}
+	\caption{Logo der UB Stuttgart}
+	\label{img:ub-logo}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \newpage  % neuer Abschnitt auf neue Seite, kann auch entfallen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Farben}
+Vordefinierte Farben des color-Pakets: black, white, red, green, blue, cyan, magenta, yellow.
+
+\begin{lstlisting}[firstnumber=auto]
+\textcolor{magenta}{Text im Farbton Magenta}
+\colorbox{green}{hinterlegt den Text mit der Farbe Green}
+\end{lstlisting}
+
+\textcolor{magenta}{Text im Farbton Magenta}
+\newline
+\colorbox{green}{hinterlegt den Text mit der Farbe Grün}
+
+\section{Mathematik}
+Bei der Darstellung von mathematischen Formeln lässt sich die Stärke von \LaTeX gut nutzen. In diesem Handout wurde in der Präambel das Paket amsmath einkommentiert. Ausführliche Informationen finden sich in der Paketdokumentation: \url{https://ctan.org/pkg/amsmath}
+
+Beim Zeilenmodus werden mathematische Elemente in die laufende Zeile eingefügt, was allerdings häufig das Layout sprengt. Der Zeilenmodus kann wie folgt genutzt werden:
+
+\begin{lstlisting}[firstnumber=auto]
+\( ... \)
+\end{lstlisting}
+
+Die Formel von Albert Einstein, die wir aus dem \LaTeX-Artikel von Wikipedia kopiert haben, nämlich \( E = mc^2 \), können wir im Fließtext problemlos einbinden. Wir haben dann aber schnell ein Problem mit dem Layout bei Formeln, die über eine Zeile hinausgehen. Eine bessere Option stellt dann der Absatzmodus dar:\footfullcite[308-310]{Voss2018wissenschaftliche}
+
+\[ m = \frac{m_0}{\sqrt{1-\frac{v^2}{c^2}}} \]
+
+Dadurch wird die Formel abgesetzt und verheddert sich nicht mit dem Zeilenlayout. Der Quellcode für dieses Beispiel sieht so aus. 
+
+\begin{lstlisting}[firstnumber=auto]
+\[ m &= \frac{m_0}{\sqrt{1-\frac{v^2}{c^2}}} \]
+\end{lstlisting}
+
+Mit der align-Umgebung lassen sich mehrere größere Formeln untereinander darstellen und auch nummerieren:
+
+\begin{align}
+E &= mc^2                 \\
+m &= \frac{m_0}{\sqrt{1-\frac{v^2}{c^2}}}
+\end{align}
+
+\begin{lstlisting}[firstnumber=auto]
+\begin{align}
+E &= mc^2                 \\
+m &= \frac{m_0}{\sqrt{1-\frac{v^2}{c^2}}}
+\end{align}
+\end{lstlisting}
+
+\section{Weiterführende Informationen zu \LaTeX}
+\begin{itemize}
+\item Online-Tutorial für Einsteiger (TU 
+Graz): \url{http://latex.tugraz.at/latex/tutorial}
+\item \LaTeX-Projektseite: \url{http://www.latex-project.org/}
+\item Einstiegsseite zum Software-Download (Open 
+Source):\\ \url{http://www.latex-project.org/get/}
+\item KOMA-Script-Dokumentation (Sammlung von Klassen und Paketen mit Anpassungen an europäische typografische Konventionen und 
+DIN-Papierformate):\\ \url{https://komascript.de/}
+\item Dante e.\,V., deutschsprachige Anwendervereinigung mit Kurzeinführung, Literaturhinweisen, Mailinglisten etc.: \url{http://www.dante.de/}
+\item 
+\href{https://ctan.mc1.root.project-creative.net/macros/latex/contrib/biblatex/doc/biblatex.pdf 
+}{Dokumentation des BibLaTeX-Pakets}
+\end{itemize}
+
+Beispiele einiger Entwicklungsumgebungen zum Download (benötigt eine 
+TeX-Installation, die teilweise mit angeboten wird:)
+
+\begin{itemize}
+ \item Plattformunabhängig: \href{https://texstudio.org}{TeXstudio} \href{http://www.tug.org/texworks/}{TeXworks} und 
+\href{http://www.xm1math.net/texmaker/download.html}{TeXmaker}
+ \item Mac OS: \href{http://pages.uoregon.edu/koch/texshop/}{TeXShop}
+ \item Linux: \href{http://kile.sourceforge.net/}{Kile}
+\end{itemize}
+
+% Abbbildungsverzeichnis
+%\listoffigures
+
+  % Literaturverzeichnis
+  \newpage
+
+\printbibliography 
+
+\end{document}
