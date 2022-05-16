@@ -33,7 +33,7 @@
   abstract   = {JavaScript is a powerful and flexible prototype-based scripting language that is increasingly used by developers to create interactive web applications. The language is interpreted, dynamic, weakly-typed, and has first-class functions. In addition, it interacts with other web languages such as CSS and HTML at runtime. All these characteristics make JavaScript code particularly error-prone and challenging to write and maintain. Code smells are patterns in the source code that can adversely influence program comprehension and maintainability of the program in the long term. We propose a set of 13 JavaScript code smells, collected from various developer resources. We present a JavaScript code smell detection technique called JSNOSE. Our metric-based approach combines static and dynamic analysis to detect smells in client-side code. This automated technique can help developers to spot code that could benefit from refactoring. We evaluate the smell finding capabilities of our technique through an empirical study. By analyzing 11 web applications, we investigate which smells detected by JSNOSE are more prevalent.},
   doi        = {10.1109/SCAM.2013.6648192},
   file       = {:milani_fard_jsnose__2013 - JSNOSE_ Detecting Javascript Code Smells.pdf:PDF},
-  groups     = {JavaScript, Software Quality},
+  groups     = {JavaScript, Software Quality, Proposal},
   journal    = {IEEE 13th International Working Conference on Source Code Analysis and Manipulation, SCAM 2013},
   shorttitle = {{JSNOSE}},
 }
@@ -50,7 +50,7 @@
   abstract  = {Source control repositories, bug repositories, archived communications, deployment logs, and code repositories are examples of software repositories that are commonly available for most software projects. The mining software repositories (MSR) field analyzes and cross-links the rich data available in these repositories to uncover interesting and actionable information about software systems. By transforming these repositories from static record-keeping ones into active repositories, we can guide decision processes in modern software projects. For example, data in source control repositories, traditionally used to archive code, could be linked with data in bug repositories to help practitioners propagate complex changes and to warn them about risky code based on prior changes and bugs. In this paper, we present a brief history of the MSR field and discuss several recent achievements and results of using MSR techniques to support software research and practice. We then discuss the various opportunities and challenges that lie in the road ahead for this important and emerging field.},
   doi       = {10.1109/FOSM.2008.4659248},
   file      = {:The_road_ahead_for_Mining_Software_Repositories.pdf:PDF},
-  groups    = {MSR},
+  groups    = {MSR, Proposal},
   keywords  = {Software, Data mining, Computer bugs, Software systems, Software engineering, Complexity theory, History},
   url       = {https://ieeexplore.ieee.org/document/4659248},
 }
@@ -88,18 +88,6 @@
   groups    = {GitHub, Software Quality},
   publisher = {Association for Computing Machinery ({ACM})},
   url       = {https://dl.acm.org/doi/10.1145/3126905},
-}
-
-@InProceedings{Kalliamvakou2014,
-  author    = {Eirini Kalliamvakou and Georgios Gousios and Kelly Blincoe and Leif Singer and Daniel M. German and Daniela Damian},
-  booktitle = {Proceedings of the 11th Working Conference on Mining Software Repositories - {MSR} 2014},
-  title     = {The promises and perils of mining {GitHub}},
-  year      = {2014},
-  publisher = {{ACM} Press},
-  doi       = {10.1145/2597073.2597074},
-  file      = {:2014_MSR_Promises_Perils.pdf:PDF},
-  groups    = {GitHub},
-  url       = {https://dl.acm.org/doi/10.1145/2597073.2597074},
 }
 
 @Article{Berger2019,
@@ -176,7 +164,7 @@
   file      = {:Assuring_software_quality_by_code_smell_detection.pdf:PDF},
   groups    = {Software Quality},
   issn      = {2375-5369},
-  keywords  = {Inspection, Java, Visualization, Software systems, Software quality, Electronic mail, software inspection, quality assurance, Java, refactoring, code smells},
+  keywords  = {Inspection, Java, Visualization, Software systems, Software quality, Electronic mail, software inspection, quality assurance, refactoring, code smells},
   url       = {https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6385092},
 }
 
@@ -220,7 +208,7 @@
   abstract   = {An advantage of code smells over traditional software measures is that the former are associated with an explicit set of refactorings to improve the existing design. Past research on code smells has emphasized the formalization and automated detection of code smells, but much less has been done to empirically investigate how good are code smells for evaluating software maintainability. This paper presents a summary of the findings in the thesis by Yamashita, which aimed at investigating the strengths and limitations of code smells for evaluating software maintainability. The study conducted comprised an outsourced maintenance project involving four Java web systems with equivalent functionality but dissimilar implementation, six software professionals, and two software companies. A main result from the study is that the usefulness of code smells differs according to the granularity level (e.g., whether the assessment is done at file or system level) and the particular operationalization of maintainability (e.g., maintainability can be measured via maintenance effort, or problems encountered during maintenance, etc). This paper summarises the most relevant findings from the thesis, discusses a series of lessons learned from conducting this study, and discusses avenues for new research in the area of code smells.},
   doi        = {10.1109/ICSM.2013.97},
   file       = {:yamashita_how_2013 - How Good Are Code Smells for Evaluating Software Maintainability_ Results from a Comparative Case Study.pdf:PDF},
-  groups     = {Software Quality, MSR},
+  groups     = {Software Quality},
   journal    = {IEEE International Conference on Software Maintenance, ICSM},
   pages      = {571},
   shorttitle = {How {Good} {Are} {Code} {Smells} for {Evaluating} {Software} {Maintainability}?},
@@ -289,7 +277,7 @@
   abstract   = {One of the more interesting developments recently gaining popularity in the server-side JavaScript space is Node.js. It's a framework for developing high-performance, concurrent programs that don't rely on the mainstream multithreading approach but use asynchronous I/O with an event-driven programming model.},
   doi        = {10.1109/MIC.2010.145},
   file       = {:Node.js_Using_JavaScript_to_Build_High-Performance_Network_Programs.pdf:PDF},
-  groups     = {JavaScript},
+  groups     = {JavaScript, Proposal},
   keywords   = {Sockets, Instruction sets, Programming, Servers, Libraries, Writing, Registers, Node, Node.js, functional programming, Web development, JavaScript, Internet},
   shorttitle = {Node.js},
   url        = {https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5617064},
@@ -313,13 +301,240 @@
   url       = {https://dl.acm.org/doi/10.5555/800253.807736},
 }
 
+ 
+@InProceedings{Park2016,
+  author    = {Park, Joonyoung and Lim, Inho and Ryu, Sukyoung},
+  booktitle = {2016 {IEEE}/{ACM} 38th {International} {Conference} on {Software} {Engineering} {Companion} ({ICSE}-{C})},
+  title     = {Battles with {False} {Positives} in {Static} {Analysis} of {JavaScript} {Web} {Applications} in the {Wild}},
+  year      = {2016},
+  month     = may,
+  note      = {ZSCC: 0000027},
+  pages     = {61--70},
+  abstract  = {Now that HTML5 technologies are everywhere from web services to various platforms, assuring quality of web applications becomes very important.While web application developers use syntactic checkers and type-related bug detectors, extremely dynamic features and diverse execution environments of web applications make it particularly difficult to statically analyze them leading to too many false positives.Recently, researchers have developed static analyzers for JavaScript web applications addressing quirky JavaScript language semantics and browser environments, but they lack empirical studies on the practicality of such analyzers.In this paper, we collect 30 JavaScript web applications in the wild, analyze them using SAFE, the state-of-the-art JavaScript static analyzer with bug detection, and investigate false positives in the analysis results.After manually inspecting them, we classify 7 reasons that cause the false positives: W3C APIs, browser-specific APIs, JavaScript library APIs, dynamic file loading, dynamic code generation, asynchronous calls, and others. Among them, we identify 4 cases which are the sources of false positives that we can practically reduce.Rather than striving for sound analysis with unrealistic assumptions, we choose to be intentionally unsound to analyze web applications in the real world with less false positives.Our evaluation shows that the approach effectively reduces false positives in statically analyzing web applications in the wild.},
+  file      = {:Battles_with_False_Positives_in_Static_Analysis_of_JavaScript_Web_Applications_in_the_Wild.pdf:PDF},
+  groups    = {JavaScript},
+  keywords  = {Computer bugs, Browsers, Libraries, Detectors, Analytical models, Loading, HTML},
+  url       = {https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7883289},
+}
+
+@InProceedings{Loring2017,
+  author    = {Matthew C. Loring and Mark Marron and Daan Leijen},
+  booktitle = {Proceedings of the 13th {ACM} {SIGPLAN} International Symposium on on Dynamic Languages},
+  title     = {Semantics of asynchronous {JavaScript}},
+  year      = {2017},
+  month     = {oct},
+  publisher = {{ACM}},
+  doi       = {10.1145/3133841.3133846},
+  file      = {:Semantics_Asynchronous_JavaScript.pdf:PDF},
+  groups    = {Asynchronous Programming},
+}
+
+@InProceedings{Alimadadi2016,
+  author    = {Saba Alimadadi and Ali Mesbah and Karthik Pattabiraman},
+  booktitle = {Proceedings of the 38th International Conference on Software Engineering},
+  title     = {Understanding asynchronous interactions in full-stack {JavaScript}},
+  year      = {2016},
+  month     = {may},
+  publisher = {{ACM}},
+  doi       = {10.1145/2884781.2884864},
+  file      = {:Understanding_Asynchronous_Interactions_in_Full-Stack_JavaScript.pdf:PDF},
+  groups    = {Asynchronous Programming, Proposal},
+}
+
+@Article{Alimadadi2018,
+  author    = {Saba Alimadadi and Di Zhong and Magnus Madsen and Frank Tip},
+  journal   = {Proceedings of the {ACM} on Programming Languages},
+  title     = {Finding broken promises in asynchronous {JavaScript} programs},
+  year      = {2018},
+  month     = {oct},
+  number    = {{OOPSLA}},
+  pages     = {1--26},
+  volume    = {2},
+  doi       = {10.1145/3276532},
+  file      = {:Finding_Broken_Promises_in_JS_Programs.pdf:PDF},
+  groups    = {Asynchronous Programming},
+  publisher = {Association for Computing Machinery ({ACM})},
+}
+
+@InProceedings{Zheng2011,
+  author    = {Yunhui Zheng and Tao Bao and Xiangyu Zhang},
+  booktitle = {Proceedings of the 20th international conference on World wide web - {WWW} {\textquotesingle}11},
+  title     = {Statically locating web application bugs caused by asynchronous calls},
+  year      = {2011},
+  publisher = {{ACM} Press},
+  doi       = {10.1145/1963405.1963517},
+  file      = {:Statically_Locating_Web_App_Bugs_Caused_by_async_calls.pdf:PDF},
+  groups    = {Asynchronous Programming},
+}
+
+@InProceedings{Guha2009,
+  author    = {Arjun Guha and Shriram Krishnamurthi and Trevor Jim},
+  booktitle = {Proceedings of the 18th international conference on World wide web - {WWW} {\textquotesingle}09},
+  title     = {Using static analysis for Ajax intrusion detection},
+  year      = {2009},
+  publisher = {{ACM} Press},
+  doi       = {10.1145/1526709.1526785},
+  file      = {:Using_Static_Analysis_Ajax_Intrusion_Detection.pdf:PDF},
+  groups    = {Asynchronous Programming},
+}
+
+@InProceedings{Hong2014,
+  author    = {Shin Hong and Yongbae Park and Moonzoo Kim},
+  booktitle = {2014 {IEEE} Seventh International Conference on Software Testing, Verification and Validation},
+  title     = {Detecting Concurrency Errors in Client-Side Java Script Web Applications},
+  year      = {2014},
+  month     = {mar},
+  publisher = {{IEEE}},
+  doi       = {10.1109/icst.2014.17},
+  groups    = {Asynchronous Programming},
+}
+
+@Article{Gallaba2015,
+  author    = {Gallaba, Keheliya},
+  title     = {Characterizing and refactoring asynchronous JavaScript callbacks},
+  year      = {2015},
+  doi       = {10.14288/1.0223155},
+  file      = {:keheliya-2015_Characterizing_asyncJS_callbacks.pdf:PDF},
+  groups    = {Asynchronous Programming, Software Quality},
+  language  = {en},
+  publisher = {University of British Columbia},
+}
+
+@Article{Hsieh2017,
+  author   = {Chin-Yun Hsieh, Canh Le My2, Kim Thoa Ho3, Yu Chin Cheng},
+  journal  = {Department of Computer Science and Information Engineering, National Taipei University of Technology, Taiwan},
+  title    = {Identification and Refactoring of Exception Handling Code Smells in JavaScript},
+  year     = {2017},
+  issn     = {1607-9264
+e-ISSN 2079-4029},
+  month    = nov,
+  abstract = {Avoid making bad smells is very important in writing exception handling code for dealing with unexpected runtime errors. The task however is challenging and demands proficient programming skills and experience. This is particularly true in developing JavaScript applications because JavaScript is very rich in features as being dynamic, interpreted and object-oriented with firstclass functions. What further complicates the situation is the use of event-driven and non-blocking I/O model in
+Node.js, which is a runtime environment written in serverside JavaScript. Extended from our previous work on exception handling code smells in Java, this study aims at identifying exception handling code smells that can occur in a JavaScript application at either the client side or the server side. The impact to software quality that each smell has is demonstrated with examples. Refactorings corresponding to the identified smells are proposed; their effects to the application, including the robustness level achieved and other benefits gained, are illustrated. The work is intended to serve as a guide in helping JavaScript developers avoid or discover exception handling code smells.},
+  doi      = {10.6138/JIT.2017.18.6.20160118},
+  file     = {:JIT_18_Identification_and_refactoring_Exception_codeSmells_JS.pdf:PDF},
+  groups   = {Asynchronous Programming, Software Quality, JavaScript},
+  keywords = {Exception handling, Code smells, refactoring, Node.js, JavaScript.},
+}
+
+@MastersThesis{Saboury2016,
+  author   = {AMIR SABOURY},
+  school   = {Département de génie informatique et génie logiciel},
+  title    = {On the fault-proneness of JavaScript code smells},
+  year     = {2016},
+  month    = dec,
+  abstract = {JavaScript is a scripting programming language that has gained a lot of popularity this past decade. Initially used exclusively for client-side web development, it has evolved to become one of the most popular programming languages, with developers now using it for both client-side and server-side application development. Similar to pplications written in other programming languages, JavaScript applications contain code smells, which are poor design choices and implementation that can negatively impact maintainability and quality. In this thesis, we investigate code smells in JavaScript applications with the aim to understand how they affect the fault-proneness of software. We detect 12 types of code smells in 537 releases of five popular JavaScript libraries (i.e., express, grunt, bower, less.js, and request) and perform a survival analysis, comparing the time until the occurrence a fault, in files containing code smells and files without code smells. Results show that (1) on average, files without code smells have hazard rates 65% lower than files with code smells, and (2) Among the studied smells, “Variable Re-assign” and “Assignment In Conditional statements” code smells have the highest hazard rates. Additionally, we conduct a survey with 1,484 JavaScript developers to understand the perception of developers towards our studied code smells. We found that developers consider “Nested Callbacks,” “Variable Re-assign,” and “Long Parameter List” code smells to be serious design problems that hinder the intainability and reliability of applications ; assessment in line with the findings of our quantitative analysis. Overall, code smells affect negatively the fault-proneness of JavaScript applications. Therefore, developers should consider tracking and removing them early on before the release of software to the public.},
+  file     = {:2016_AmirSaboury.pdf:PDF},
+  groups   = {Asynchronous Programming},
+}
+
+@InProceedings{Gallaba2015a,
+  author    = {Keheliya Gallaba and Ali Mesbah and Ivan Beschastnikh},
+  booktitle = {2015 {ACM}/{IEEE} International Symposium on Empirical Software Engineering and Measurement ({ESEM})},
+  title     = {Don't Call Us, We'll Call You: Characterizing Callbacks in Javascript},
+  year      = {2015},
+  month     = {oct},
+  publisher = {{IEEE}},
+  doi       = {10.1109/esem.2015.7321196},
+  file      = {:Dont_Call_Us_Well_Call_You_Characterizing_Callbacks_in_Javascript.pdf:PDF},
+  groups    = {Asynchronous Programming},
+}
+
+@InProceedings{Fard2017,
+  author    = {Amin Milani Fard and Ali Mesbah},
+  booktitle = {2017 {IEEE} International Conference on Software Testing, Verification and Validation ({ICST})},
+  title     = {{JavaScript}: The (Un)Covered Parts},
+  year      = {2017},
+  month     = {mar},
+  publisher = {{IEEE}},
+  doi       = {10.1109/icst.2017.28},
+  file      = {:JavaScript_The_UnCovered_Parts.pdf:PDF},
+  groups    = {JavaScript},
+}
+
+@Article{Luong2019,
+  author    = {Tran Thanh Luong and Le My Canh},
+  journal   = {Hue University Journal of Science: Techniques and Technology},
+  title     = {{JAVASCRIPT} {ASYNCHRONOUS} {PROGRAMMING}},
+  year      = {2019},
+  month     = {jul},
+  number    = {2B},
+  pages     = {5--16},
+  volume    = {128},
+  doi       = {10.26459/hueuni-jtt.v128i2b.5104},
+  file      = {:JavaScript_Asynchronous_Programming.pdf:PDF},
+  groups    = {JavaScript, Asynchronous Programming, Software Quality, Proposal},
+  publisher = {Hue University},
+}
+
+@InProceedings{Gallaba2017,
+  author    = {Keheliya Gallaba and Quinn Hanam and Ali Mesbah and Ivan Beschastnikh},
+  booktitle = {2017 {IEEE} International Conference on Software Maintenance and Evolution ({ICSME})},
+  title     = {Refactoring Asynchrony in {JavaScript}},
+  year      = {2017},
+  month     = {sep},
+  publisher = {{IEEE}},
+  doi       = {10.1109/icsme.2017.83},
+  file      = {:Refactoring_Asynchrony_in_JavaScript.pdf:PDF},
+  groups    = {Asynchronous Programming, Proposal},
+}
+
+@Article{Johannes2019,
+  author    = {David Johannes and Foutse Khomh and Giuliano Antoniol},
+  journal   = {Software Quality Journal},
+  title     = {A large-scale empirical study of code smells in {JavaScript} projects},
+  year      = {2019},
+  month     = {mar},
+  number    = {3},
+  pages     = {1271--1314},
+  volume    = {27},
+  doi       = {10.1007/s11219-019-09442-9},
+  file      = {:Johannes2019_Article_ALarge-scaleEmpiricalStudyOfCo.pdf:PDF},
+  groups    = {JavaScript},
+  publisher = {Springer Science and Business Media {LLC}},
+}
+
+@Misc{Sotiropoulos2019,
+  author    = {Sotiropoulos, Thodoris and Livshits, Benjamin},
+  title     = {Static Analysis for Asynchronous JavaScript Programs},
+  year      = {2019},
+  copyright = {arXiv.org perpetual, non-exclusive license},
+  doi       = {10.48550/ARXIV.1901.03575},
+  file      = {:Static_Analysis_for_AsynchronousJS_programs.pdf:PDF},
+  groups    = {Asynchronous Programming},
+  keywords  = {Programming Languages (cs.PL), FOS: Computer and information sciences},
+  publisher = {arXiv},
+}
+
+@InProceedings{Hemmati2013,
+  author    = {Hadi Hemmati and Sarah Nadi and Olga Baysal and Oleksii Kononenko and Wei Wang and Reid Holmes and Michael W. Godfrey},
+  booktitle = {2013 10th Working Conference on Mining Software Repositories ({MSR})},
+  title     = {The {MSR} Cookbook: Mining a decade of research},
+  year      = {2013},
+  month     = {may},
+  publisher = {{IEEE}},
+  doi       = {10.1109/msr.2013.6624048},
+  file      = {:msr_2013_hemmati.pdf:PDF},
+  groups    = {MSR, Proposal},
+}
+
+@InProceedings{Kalliamvakou2014,
+  author    = {Eirini Kalliamvakou and Georgios Gousios and Kelly Blincoe and Leif Singer and Daniel M. German and Daniela Damian},
+  booktitle = {Proceedings of the 11th Working Conference on Mining Software Repositories - {MSR} 2014},
+  title     = {The promises and perils of mining {GitHub}},
+  year      = {2014},
+  publisher = {{ACM} Press},
+  doi       = {10.1145/2597073.2597074},
+  file      = {:2014_MSR_Promises_Perils.pdf:PDF},
+  groups    = {GitHub, MSR, Proposal},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
 
 @Comment{jabref-meta: grouping:
 0 AllEntriesGroup:;
-1 StaticGroup:Proposal\;0\;1\;0x00ffffff\;\;\;;
+1 StaticGroup:Proposal\;0\;0\;0x00ffffff\;\;\;;
 1 StaticGroup:Asynchronous Programming\;0\;1\;0x00ff00ff\;\;\;;
-1 StaticGroup:JavaScript\;0\;1\;0xffff00ff\;\;\;;
+1 StaticGroup:JavaScript\;0\;0\;0xffff00ff\;\;\;;
 1 StaticGroup:GitHub\;0\;0\;0xf59b20ff\;\;\;;
 1 StaticGroup:MSR\;0\;1\;0xff00ffff\;\;\;;
 1 StaticGroup:Software Quality\;0\;1\;0xff0000ff\;\;\;;
