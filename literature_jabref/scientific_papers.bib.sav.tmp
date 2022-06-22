@@ -219,7 +219,7 @@
 @Article{Zhang2019,
   author   = {Zhang, Jie and Li, Feng and Hao, Dan and Wang, Meng and Tang, Hao and Zhang, Lu and Harman, Mark},
   journal  = {IEEE Transactions on Software Engineering},
-  title    = {A {Study} of {Programming} {Languages} and {Their} {Bug} {Resolution} {Characteristics}},
+  title    = {A {Study} of {Bug} {Resolution} {Characteristics} in Popular Programming Languages},
   year     = {2019},
   month    = dec,
   note     = {ZSCC: 0000001},
@@ -258,7 +258,7 @@
   pages     = {151--171},
   doi       = {10.1007/978-3-030-05767-1_10},
   file      = {:2019_Book_SoftwareQualityTheComplexityAn.pdf:PDF},
-  groups    = {Software Quality},
+  groups    = {Software Quality, GitHub},
   url       = {https://link.springer.com/chapter/10.1007/978-3-030-05767-1_10},
 }
 
@@ -463,4 +463,4 @@ Node.js, which is a runtime environment written in serverside JavaScript. Extend
   doi       = {10.26459/hueuni-jtt.v128i2b.5104},
   file      = {:JavaScript_Asynchronous_Programming.pdf:PDF},
   groups    = {JavaScript, Asynchronous Programming, Software Quality},
-  publisher = {Hue U
+  publisher = {Hu
