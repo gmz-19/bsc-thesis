@@ -17,4 +17,6 @@
 
 #### Data Collection
 
+- [ ] Define metrics
+
 #### Data Analysis
