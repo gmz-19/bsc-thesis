@@ -258,7 +258,7 @@
   pages     = {151--171},
   doi       = {10.1007/978-3-030-05767-1_10},
   file      = {:2019_Book_SoftwareQualityTheComplexityAn.pdf:PDF},
-  groups    = {Software Quality, GitHub},
+  groups    = {Software Quality, GitHub, MSR},
   url       = {https://link.springer.com/chapter/10.1007/978-3-030-05767-1_10},
 }
 
@@ -463,4 +463,4 @@ Node.js, which is a runtime environment written in serverside JavaScript. Extend
   doi       = {10.26459/hueuni-jtt.v128i2b.5104},
   file      = {:JavaScript_Asynchronous_Programming.pdf:PDF},
   groups    = {JavaScript, Asynchronous Programming, Software Quality},
-  publisher = {Hu
+  publisher 

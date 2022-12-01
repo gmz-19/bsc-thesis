@@ -219,7 +219,7 @@
 @Article{Zhang2019,
   author   = {Zhang, Jie and Li, Feng and Hao, Dan and Wang, Meng and Tang, Hao and Zhang, Lu and Harman, Mark},
   journal  = {IEEE Transactions on Software Engineering},
-  title    = {A {Study} of {Programming} {Languages} and {Their} {Bug} {Resolution} {Characteristics}},
+  title    = {A {Study} of {Bug} {Resolution} {Characteristics} in Popular Programming Languages},
   year     = {2019},
   month    = dec,
   note     = {ZSCC: 0000001},
@@ -258,7 +258,7 @@
   pages     = {151--171},
   doi       = {10.1007/978-3-030-05767-1_10},
   file      = {:2019_Book_SoftwareQualityTheComplexityAn.pdf:PDF},
-  groups    = {Software Quality, GitHub},
+  groups    = {Software Quality, GitHub, MSR},
   url       = {https://link.springer.com/chapter/10.1007/978-3-030-05767-1_10},
 }
 
@@ -567,7 +567,7 @@ Node.js, which is a runtime environment written in serverside JavaScript. Extend
 @Article{Dyer2015,
   author    = {Robert Dyer and Hoan Anh Nguyen and Hridesh Rajan and Tien N. Nguyen},
   journal   = {{ACM} Transactions on Software Engineering and Methodology},
-  title     = {Boa},
+  title     = {Ultra-Large-Scale Software Repository and Source-Code Mining},
   year      = {2015},
   month     = {dec},
   number    = {1},
@@ -610,8 +610,96 @@ Node.js, which is a runtime environment written in serverside JavaScript. Extend
   doi       = {10.48550/ARXIV.2203.11115},
   file      = {:To_Type_or_Not_to_Type_A_Systematic_Comparison_of_.pdf:PDF},
   groups    = {Software Quality, GitHub},
-  keywords  = {Software Engineering (cs.SE), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  keywords  = {Software Engineering (cs.SE), FOS: Computer and information sciences},
   publisher = {arXiv},
+}
+
+@Misc{Alves2022,
+  author    = {Alves, Fernando and Oliveira, Delano and Madeiral, Fernanda and Castor, Fernando},
+  title     = {On the Bug-proneness of Structures Inspired by Functional Programming in JavaScript Projects},
+  year      = {2022},
+  copyright = {Creative Commons Attribution 4.0 International},
+  doi       = {10.48550/ARXIV.2206.08849},
+  file      = {:On_the_Bug-Proneness_of_Structures_inspired_functional_programming_JavaScript.pdf:PDF},
+  groups    = {Software Quality},
+  keywords  = {Software Engineering (cs.SE), Programming Languages (cs.PL), FOS: Computer and information sciences},
+  publisher = {arXiv},
+}
+
+@InProceedings{Palma2014,
+  author    = {Francis Palma and Le An and Foutse Khomh and Naouel Moha and Yann-Gael Gueheneuc},
+  booktitle = {2014 {IEEE} 7th International Conference on Service-Oriented Computing and Applications},
+  title     = {Investigating the Change-Proneness of Service Patterns and Antipatterns},
+  year      = {2014},
+  month     = {nov},
+  publisher = {{IEEE}},
+  doi       = {10.1109/soca.2014.43},
+  file      = {:Investigating_the_Change-Proneness_of_Service_Patterns_and_Antipatterns.pdf:PDF},
+  groups    = {MSR},
+  url       = {https://ieeexplore.ieee.org/document/6978164},
+}
+
+ 
+@Misc{SanData,
+  author   = {SanData},
+  title    = {Was ist {Network} {Access} {Control} ({NAC})?},
+  abstract = {Was ist NAC, welche Aufgaben hat es und welche Technologien verwendet es?},
+  groups   = {Vector},
+  language = {de},
+  url      = {https://www.sandata.net/main.asp?VID=1&Kat1=123&Kat2=807&Kat3=727&scsqs=1},
+  urldate  = {2022-09-21},
+}
+
+ 
+@Misc{,
+  title    = {What {Is} {Network} {Access} {Control} ({NAC})?},
+  abstract = {Network access control (NAC) is a security solution that enforces policy on devices that access networks to increase network visibility and reduce risk.},
+  groups   = {Vector},
+  journal  = {Cisco},
+  language = {en},
+  url      = {https://www.cisco.com/c/en/us/products/security/what-is-network-access-control-nac.html},
+  urldate  = {2022-09-22},
+}
+
+ 
+@Article{He2022,
+  author     = {He, Yuanhang and Huang, Daochao and Chen, Lei and Ni, Yi and Ma, Xiangjie},
+  journal    = {Wireless Communications and Mobile Computing},
+  title      = {A {Survey} on {Zero} {Trust} {Architecture}: {Challenges} and {Future} {Trends}},
+  year       = {2022},
+  month      = jun,
+  pages      = {1--13},
+  volume     = {2022},
+  abstract   = {The traditional perimeter-based network protection model cannot adapt to the development of current technology. Zero trust is a new type of network security model, which is based on the concept of never trust and always verify. Whether the access subject is in the internal network or the external network, it needs to be authenticated to access resources. The zero trust model has received extensive attention in research and practice because it can meet the new network security requirements. However, the application of zero trust is still in its infancy, and enterprises, organizations, and individuals are not fully aware of the advantages and disadvantages of zero trust, which greatly hinders the application of zero trust. This paper introduces the existing zero trust architecture and analyzes the core technologies including identity authentication, access control, and trust assessment, which are mainly relied on in the zero trust architecture. The main solutions under each technology are compared and analyzed to summarize the advantages and disadvantages, as well as the current challenges and future research trends. Our goal is to provide support for the research and application of future zero trust architectures.},
+  doi        = {10.1155/2022/6476274},
+  file       = {Full Text PDF:https\://www.researchgate.net/journal/Wireless-Communications-and-Mobile-Computing-1530-8677/publication/361335518_A_Survey_on_Zero_Trust_Architecture_Challenges_and_Future_Trends/links/62b09d0ddc817901fc6d680a/A-Survey-on-Zero-Trust-Architecture-Challenges-and-Future-Trends.pdf:application/pdf;ResearchGate Link:https\://www.researchgate.net/publication/361335518_A_Survey_on_Zero_Trust_Architecture_Challenges_and_Future_Trends:},
+  groups     = {Vector},
+  shorttitle = {A {Survey} on {Zero} {Trust} {Architecture}},
+}
+
+ 
+@Misc{2020,
+  month    = mar,
+  title    = {Pros {And} {Cons} {Of} {The} {Zero} {Trust} {Model}},
+  year     = {2020},
+  abstract = {The Zero Trust model assumes that every entity is a potential threat, even within the network. Here are some pros and cons to adopting such a strict model.},
+  chapter  = {Secure Intelligent Workplace},
+  groups   = {Vector},
+  language = {en-US},
+  url      = {https://www.infusedinnovations.com/blog/secure-intelligent-workplace/pros-and-cons-of-the-zero-trust-model},
+  urldate  = {2022-09-22},
+}
+
+ 
+@Misc{,
+  title      = {How {To} {Implement} {Zero} {Trust}: 5-steps {Approach} \& its challenges},
+  abstract   = {Learn how to implement zero trust security and the steps you need to take. Understand why implementation involves a policy of never trusting and always verifying the authenticity and privileges of devices and users.},
+  groups     = {Vector},
+  journal    = {Fortinet},
+  language   = {en},
+  shorttitle = {How {To} {Implement} {Zero} {Trust}},
+  url        = {https://www.fortinet.com/resources/cyberglossary/how-to-implement-zero-trust},
+  urldate    = {2022-09-22},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}
@@ -619,10 +707,11 @@ Node.js, which is a runtime environment written in serverside JavaScript. Extend
 @Comment{jabref-meta: grouping:
 0 AllEntriesGroup:;
 1 StaticGroup:Proposal\;0\;1\;0x00ffffff\;\;\;;
-1 StaticGroup:Asynchronous Programming\;0\;1\;0x00ff00ff\;\;\;;
+1 StaticGroup:Asynchronous Programming\;0\;0\;0x00ff00ff\;\;\;;
 1 StaticGroup:JavaScript\;0\;0\;0xffff00ff\;\;\;;
 1 StaticGroup:GitHub\;0\;0\;0xf59b20ff\;\;\;;
 1 StaticGroup:MSR\;0\;1\;0xff00ffff\;\;\;;
 1 StaticGroup:Software Quality\;0\;1\;0xff0000ff\;\;\;;
 1 StaticGroup:Significant\;0\;1\;0x800000ff\;\;\;;
+1 StaticGroup:Vector\;0\;1\;0xb31a1aff\;\;\;;
 }
