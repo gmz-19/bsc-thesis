@@ -11,7 +11,8 @@ import pandas as pd
 
 
 class Sampling:
-    """In this class, individual methods are implemented that were executed for sampling. The sampling process is iterative and cannot be performed in one single step. More about this can be found in the paper."""
+    """In this class, individual methods are implemented that were executed for sampling. The sampling process is
+    iterative and cannot be performed in one single step. More about this can be found in the paper."""
 
     def __init__(self, language):
         """Set date here.
@@ -19,7 +20,7 @@ class Sampling:
             language (string): The programming language for which the functions from this class should be executed.
         """
         self.language = language
-        self.startDate = dt.date(2013, 12, 24)
+        self.startDate = dt.date(2013, 1, 1)
         self.endDate = dt.date(2023, 1, 1)
         self.incompleteResult = False
         self.errorCode = "200"
@@ -28,7 +29,8 @@ class Sampling:
         pass
 
     def requestRepos(self):
-        """This is the first step of sampling. In this function, all repos that match the characteristics are stored in a file. More to the characteristics at the request url."""
+        """This is the first step of sampling. In this function, all repos that match the characteristics are stored
+        in a file. More to the characteristics at the request url."""
 
         timeOut = 0
         reposCounter = 0
@@ -99,44 +101,6 @@ class Sampling:
             ),
         )
 
-    def checkApiLimit(self, username):
-        """Check how many requests have already been made this hour. Change token number in function.
-
-        Args:
-            username (string): The username behind the token.
-        """
-        url = f"https://api.github.com/users/{username}"
-        test = requests.head(url, auth=("username", constants.TOKEN3))
-        # print(test.headers)
-        # print("Rate Limit:", test.headers.get("X-RateLimit-Limit'"))
-        print(test.headers.get("X-Ratelimit-Remaining"))
-        # print("Resets in:", test.headers.get("X-Ratelimit-Reset"))"""
-
-    def sortReposByStars(self):
-        """Sorts the repo list by stars and gives each repo an id."""
-        print("started")
-        reposList = fileClass.openFile(str(self.language) + "Repos.txt")
-        repos = reposList["repositories"]
-
-        sortedRepos = sorted(repos, key=lambda repo: repo["stars"], reverse=True)
-
-        index = 1
-        time.sleep(15)
-        for repo in repos:
-            repo["index"] = index
-            index += 1
-
-        fileClass.writeToFile(
-            str(self.language) + "Repos.txt",
-            sampling.repoJsons(
-                reposList["total_count"],
-                reposList["incomplete_results"],
-                reposList["status_code"],
-                sortedRepos,
-            ),
-        )
-        print("sorted")
-
     def setErrorToDefault(self):
         self.incompleteResult = False
         self.errorCode = "200"
@@ -144,24 +108,19 @@ class Sampling:
     def daterange(self, startDate, endDate):
         """Function that gives the range of the date.
 
-        Args:
-            startDate (date): Date of the first repo to be examined.
-            endDate (date): Date of the last repo to be examined.
-
-        Yields:
-            list: List of all dates in the given range.
+        :param startDate: Date of the first repo to be examined.
+        :param endDate: Date of the last repo to be examined.
+        :return: list: List of all dates in the given range.
         """
         for n in range(int((endDate - startDate).days)):
             yield startDate + timedelta(n)
 
     def timeOut(self, currRequestCount, timeOutRequestNumb):
         """If more than the allowed number of requests is exceeded, there will be a one-minute pause.
-        Args:
-            currRequestCount ([integer): Cur number of request.
-            timeOutRequestNumb (integer): If this number is exceeded, a timeout is made.
 
-        Returns:
-            boolean: If a timeout is necessary
+        :param currRequestCount: Current number of request.
+        :param timeOutRequestNumb: If this number is exceeded, a timeout is made.
+        :return: boolean: If a timeout is necessary
         """
         if currRequestCount % timeOutRequestNumb == 0:
             self.counter = 0
@@ -184,11 +143,8 @@ class Sampling:
     def requestLanguages(self, repoName):
         """Function to get all languages used in the repo.
 
-        Args:
-            repoName (boolean): The complete name of a GitHub repository.
-
-        Returns:
-            json: Json of the languages used in the repo.
+        :param repoName: (boolean): The complete name of a GitHub repository.
+        :return: Json of the languages used in the repo.
         """
         url = f"https://api.github.com/repos/{repoName}/languages"
 
@@ -207,6 +163,43 @@ class Sampling:
             "repositories": repositories,
         }
 
+    def checkApiLimit(self, username):
+        """Check how many requests have already been made this hour. Change token number in function.
+
+        :param username: The username behind the token.
+        :return: Rate Limit, Rate Remaining and Rate Reset
+        """
+        url = f"https://api.github.com/users/{username}"
+        test = requests.head(url, auth=("username", constants.TOKEN3))
+        print("Rate Limit:", test.headers.get("X-RateLimit-Limit'"))
+        print("Rate Remaining:", test.headers.get("X-Ratelimit-Remaining"))
+        print("Resets in:", test.headers.get("X-Ratelimit-Reset"))
+
+    def sortReposByStars(self):
+        """Sorts the repo list by stars and gives each repo an id."""
+        print("started")
+        reposList = fileClass.openFile(str(self.language) + "Repos.txt")
+        repos = reposList["repositories"]
+
+        sortedRepos = sorted(repos, key=lambda repo: repo["stars"], reverse=True)
+
+        index = 1
+        time.sleep(15)
+        for repo in sortedRepos:
+            repo["index"] = index
+            index += 1
+
+        fileClass.writeToFile(
+            str(self.language) + "Repos.txt",
+            sampling.repoJsons(
+                reposList["total_count"],
+                reposList["incomplete_results"],
+                reposList["status_code"],
+                sortedRepos,
+            ),
+        )
+        print("sorted")
+
 
 class File:
     """All functions related to the json file are in this class."""
@@ -217,11 +210,8 @@ class File:
     def openFile(self, fileName):
         """Opens txt file.
 
-        Args:
-            fileName (string): Complete filename with pl.
-
-        Returns:
-            list: Json of the txt file.
+        :param fileName: (string): Complete filename with programming language.
+        :return: list: Json of the txt file.
         """
         try:
             with open(fileName, encoding="utf8") as f:
@@ -233,9 +223,9 @@ class File:
     def writeToFile(self, fileName, repoJson):
         """Writes to txt file.
 
-        Args:
-            fileName (string): Complete filename with pl.
-            repoJson (list): The json object to written in the txt file.
+        :param fileName: (string): Complete filename with programming language.
+        :param repoJson: (list): The json object to written in the txt file.
+        :return:
         """
         with open(fileName, "w", encoding="utf-8") as file:
             json.dump(repoJson, file, ensure_ascii=False, indent=4)
@@ -243,8 +233,7 @@ class File:
     def deleteFiles(self, files):
         """Remove file from os.
 
-        Args:
-            files (list): List of paths to be deleted.
+        :param files: (list): List of paths to be deleted.
         """
         for file in files:
             os.remove(file)
@@ -256,4 +245,4 @@ fileClass = File()
 
 sampling = Sampling("JavaScript")
 
-sampling.requestRepos()
+sampling.sortReposByStars()
