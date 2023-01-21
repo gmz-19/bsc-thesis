@@ -9,16 +9,23 @@ The goal is to improve software engineering practices by uncovering interesting 
 
 ## Research Questions
 
-1. How do asynchronous programming constructs affect software quality?
-1.1 Do JavaScript applications using callbacks lead to less software quality?
-1.2 Do JavaScript applications using async/await lead to less software quality?
-1.3 Do JavaScript applications that use "promises" show better software quality?
+#### RQ1: "What are common bug patterns of using asynchronous programming constructs in JavaScript?"
+
+#### RQ2: "How do asynchronous programming constructs affect software quality?"
+1. Do JavaScript applications using "callbacks" lead to less software quality?
+2. Do JavaScript applications using "async/await" lead to less software quality?
+3. Do JavaScript applications that use "promise" show better software quality?
+
+#### RQ3: "What characteristics influence the frequency of bug patterns of the analyzed JavaScript applications?"
+1. Choice of asynchronous programming constructs.
+2. Choice of framework.
+3. Choice of 
 
 --> an Qualitätsattribute orientieren, ISO/IEC 25010
 
 ## Hypotheses
 
-##### For RQ1
+#### For RQ1
 
 - [ ] Null Hypotheses:
 - [ ] Alternative Hyperthesis:
@@ -33,11 +40,11 @@ The goal is to improve software engineering practices by uncovering interesting 
 - [ ] Null Hypotheses:
 - [ ] Alternative Hyperthesis:  
 
-## Object Selection
+## Study Object Selection
 
-- [ ] GitHub as source of open-source code
+- [ ] GitHub as source of open-source repositories and code
 - [ ] GitHub API for selecting and downloading code
-- [ ] 
+- [ ] GitHub Search for setting constraints and requirements 
 
 ## Sampling Strategy
 
