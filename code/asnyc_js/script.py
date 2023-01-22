@@ -127,9 +127,7 @@ class Sampling:
             time.sleep(60)
             return True
 
-    def repoKey(
-            self, index, repoFullName, creationDate, languages, stars, issues, commits
-    ):
+    def repoKey(self, index, repoFullName, creationDate, languages, stars, issues, commits, asyncFiles):
         return {
             "index": index,
             "repoFullName": repoFullName,
@@ -138,6 +136,7 @@ class Sampling:
             "stars": stars,
             "issues": issues,
             "commits": commits,
+            "async_files_count": asyncFiles,
         }
 
     def requestLanguages(self, repoName):
@@ -200,6 +199,155 @@ class Sampling:
         )
         print("sorted")
 
+    def categorizeAsyncRepos(self):
+        print("started")
+
+        # maybe not necessary
+        tokens = [constants.TOKEN, constants.TOKEN1, constants.TOKEN2, constants.TOKEN3, constants.TOKEN4]
+        current_token = 0
+        timeOut = 0
+        limit = 5000
+        delay = 3600 / limit
+        # maybe not necessary
+
+        promiseCounter = 0
+        callbackCounter = 0
+        asyncCounter = 0
+        uncategorizedCounter = 0
+
+        promiseRepos = []
+        callbackRepos = []
+        asyncRepos = []
+        uncategorizedRepos = []
+
+        reposList = fileClass.openFile(str(self.language) + "Repos.txt")
+        async_keywords = ["callback", "promise", "async"]
+
+        for repo in reposList["repositories"]:
+            timeOut += 1
+            print("Index: ", repo["index"])
+            repoName = repo["repoFullName"]
+            print("RepoName: ", repoName)
+
+            if sampling.timeOut(timeOut, 5):
+                fileClass.writeToFile(
+                    "PromiseRepos.txt",
+                    sampling.repoJsons(
+                        promiseCounter,
+                        reposList["incomplete_results"],
+                        reposList["status_code"],
+                        promiseRepos,
+                    ),
+                )
+                fileClass.writeToFile(
+                    "CallbackRepos.txt",
+                    sampling.repoJsons(
+                        callbackCounter,
+                        reposList["incomplete_results"],
+                        reposList["status_code"],
+                        callbackRepos,
+                    ),
+                )
+                fileClass.writeToFile(
+                    "AsyncRepos.txt",
+                    sampling.repoJsons(
+                        asyncCounter,
+                        reposList["incomplete_results"],
+                        reposList["status_code"],
+                        asyncRepos,
+                    ),
+                )
+                fileClass.writeToFile(
+                    "UncategorizedRepos.txt",
+                    sampling.repoJsons(
+                        uncategorizedCounter,
+                        reposList["incomplete_results"],
+                        reposList["status_code"],
+                        uncategorizedRepos,
+                    ),
+                )
+
+            async_count = {key: 0 for key in async_keywords}
+            total_files = 0
+            for keyword in async_keywords:
+                url = f"https://api.github.com/search/code?q={keyword}+in:file+language:JavaScript+repo:{repoName}"
+                response = requests.get(url, auth=("gmz-19", tokens[current_token]))
+                data = response.json()
+                async_count[keyword] = data["total_count"]
+                print("Async Count: " + keyword, async_count[keyword])
+                total_files += data["total_count"]
+
+            if total_files == 0:
+                continue
+            async_percentage = {key: async_count[key] / total_files for key in async_keywords}
+            print(async_percentage)
+            files_count_json = {key: async_count[key] for key in async_keywords}
+            print("Files Count JSON", files_count_json)
+            max_keyword = max(async_percentage, key=async_percentage.get)
+            print("Max Keyword", max_keyword)
+            max_value = async_percentage[max_keyword]
+            print("MAX VALUE", max_value)
+
+            if max_value > 0.5:
+                if max_keyword == "promise":
+                    promiseCounter += 1
+                    promiseRepos.append(
+                        sampling.repoKey(
+                            repo["index"],
+                            repoName,
+                            repo["creationDate"],
+                            repo["languages"],
+                            repo["stars"],
+                            None,
+                            None,
+                            files_count_json,
+                        )
+                    )
+                    print(promiseRepos)
+                elif max_keyword == "callback":
+                    callbackCounter += 1
+                    callbackRepos.append(
+                        sampling.repoKey(
+                            repo["index"],
+                            repoName,
+                            repo["creationDate"],
+                            repo["languages"],
+                            repo["stars"],
+                            None,
+                            None,
+                            files_count_json,
+                        )
+                    )
+                elif max_keyword in ["async"]:
+                    asyncCounter += 1
+                    asyncRepos.append(
+                        sampling.repoKey(
+                            repo["index"],
+                            repoName,
+                            repo["creationDate"],
+                            repo["languages"],
+                            repo["stars"],
+                            None,
+                            None,
+                            files_count_json,
+                        )
+                    )
+            else:
+                uncategorizedCounter += 1
+                uncategorizedRepos.append(
+                    sampling.repoKey(
+                        repo["index"],
+                        repoName,
+                        repo["creationDate"],
+                        repo["languages"],
+                        repo["stars"],
+                        None,
+                        None,
+                        files_count_json,
+                    )
+                )
+        print("categorized")
+
 
 class File:
     """All functions related to the json file are in this class."""
@@ -245,4 +393,4 @@ fileClass = File()
 
 sampling = Sampling("JavaScript")
 
-sampling.sortReposByStars()
+sampling.categorizeAsyncRepos()
