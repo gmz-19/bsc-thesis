@@ -200,15 +200,11 @@ class Sampling:
         print("sorted")
 
     def categorizeAsyncRepos(self):
-        print("started")
+        print("Started categorize repos to callback, promise, async.")
 
-        # maybe not necessary
         tokens = [constants.TOKEN, constants.TOKEN1, constants.TOKEN2, constants.TOKEN3, constants.TOKEN4]
         current_token = 0
         timeOut = 0
-        limit = 5000
-        delay = 3600 / limit
-        # maybe not necessary
 
         promiseCounter = 0
         callbackCounter = 0
@@ -224,10 +220,11 @@ class Sampling:
         async_keywords = ["callback", "promise", "async"]
 
         for repo in reposList["repositories"]:
-            timeOut += 1
             print("Index: ", repo["index"])
             repoName = repo["repoFullName"]
             print("RepoName: ", repoName)
+
+            timeOut += 1
 
             if sampling.timeOut(timeOut, 5):
                 fileClass.writeToFile(
@@ -279,6 +276,12 @@ class Sampling:
 
             if total_files == 0:
                 continue
+            if response.status_code == 403:
+                # Switch to the next token
+                print("Next Token will be used.")
+                current_token += 1
+                if current_token == len(tokens):
+                    current_token = 0
             async_percentage = {key: async_count[key] / total_files for key in async_keywords}
             print(async_percentage)
             files_count_json = {key: async_count[key] for key in async_keywords}
@@ -288,7 +291,7 @@ class Sampling:
             max_value = async_percentage[max_keyword]
             print("MAX VALUE", max_value)
 
-            if max_value > 0.5:
+            if max_value >= 0.5:
                 if max_keyword == "promise":
                     promiseCounter += 1
                     promiseRepos.append(
