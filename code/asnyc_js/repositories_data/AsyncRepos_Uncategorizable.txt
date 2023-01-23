@@ -1,0 +1,677 @@
+{
+    "language": "JavaScript",
+    "total_count": 39,
+    "time_period": "Start date: 2013-01-01, end date: 2023-01-01",
+    "incomplete_results": false,
+    "status_code": "200",
+    "repositories": [
+        {
+            "index": 5,
+            "repoFullName": "node-fetch/node-fetch",
+            "creationDate": "2015-01-26",
+            "languages": {
+                "JavaScript": 199965,
+                "TypeScript": 3341
+            },
+            "stars": 8096,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 6,
+                "promise": 7,
+                "async": 11
+            }
+        },
+        {
+            "index": 21,
+            "repoFullName": "mozilla/webextension-polyfill",
+            "creationDate": "2016-10-06",
+            "languages": {
+                "JavaScript": 78099
+            },
+            "stars": 2041,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 8,
+                "promise": 12,
+                "async": 19
+            }
+        },
+        {
+            "index": 30,
+            "repoFullName": "sindresorhus/emittery",
+            "creationDate": "2017-11-27",
+            "languages": {
+                "JavaScript": 46456,
+                "TypeScript": 7113
+            },
+            "stars": 1533,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 1,
+                "promise": 2,
+                "async": 3
+            }
+        },
+        {
+            "index": 54,
+            "repoFullName": "davellanedam/node-express-mongodb-jwt-rest-api-skeleton",
+            "creationDate": "2018-09-11",
+            "languages": {
+                "JavaScript": 115207,
+                "HTML": 560,
+                "Shell": 368
+            },
+            "stars": 814,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 6,
+                "promise": 42,
+                "async": 46
+            }
+        },
+        {
+            "index": 88,
+            "repoFullName": "dai-shi/react-hooks-async",
+            "creationDate": "2018-12-11",
+            "languages": {
+                "JavaScript": 18551
+            },
+            "stars": 500,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 16,
+                "promise": 15,
+                "async": 26
+            }
+        },
+        {
+            "index": 107,
+            "repoFullName": "vuejs/vue-async-data",
+            "creationDate": "2015-08-10",
+            "languages": {
+                "JavaScript": 253473,
+                "HTML": 291
+            },
+            "stars": 420,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 1,
+                "promise": 2,
+                "async": 3
+            }
+        },
+        {
+            "index": 351,
+            "repoFullName": "callstack/async-storage",
+            "creationDate": "2016-12-12",
+            "languages": {
+                "JavaScript": 9282
+            },
+            "stars": 106,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 2,
+                "promise": 3,
+                "async": 4
+            }
+        },
+        {
+            "index": 423,
+            "repoFullName": "JS-DevTools/readdir-enhanced",
+            "creationDate": "2016-08-18",
+            "languages": {
+                "JavaScript": 92746,
+                "TypeScript": 43126
+            },
+            "stars": 78,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 4,
+                "promise": 3,
+                "async": 6
+            }
+        },
+        {
+            "index": 520,
+            "repoFullName": "cvuorinen/angular1-async-filter",
+            "creationDate": "2016-02-17",
+            "languages": {
+                "JavaScript": 11384
+            },
+            "stars": 58,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 1,
+                "promise": 3,
+                "async": 4
+            }
+        },
+        {
+            "index": 559,
+            "repoFullName": "EmberExperts/ember-await",
+            "creationDate": "2019-06-16",
+            "languages": {
+                "JavaScript": 45518,
+                "Handlebars": 3372,
+                "HTML": 1729,
+                "CSS": 318
+            },
+            "stars": 54,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 4,
+                "promise": 3,
+                "async": 6
+            }
+        },
+        {
+            "index": 733,
+            "repoFullName": "dimichgh/oja",
+            "creationDate": "2017-02-10",
+            "languages": {
+                "JavaScript": 85893
+            },
+            "stars": 39,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 2,
+                "promise": 3,
+                "async": 4
+            }
+        },
+        {
+            "index": 780,
+            "repoFullName": "ejnshtein/vk-to-telegram",
+            "creationDate": "2018-02-26",
+            "languages": {
+                "JavaScript": 35040
+            },
+            "stars": 36,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 4,
+                "promise": 2,
+                "async": 6
+            }
+        },
+        {
+            "index": 781,
+            "repoFullName": "leocabeza/the-movie-db",
+            "creationDate": "2018-04-30",
+            "languages": {
+                "JavaScript": 142032,
+                "Shell": 112
+            },
+            "stars": 36,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 1,
+                "promise": 30,
+                "async": 31
+            }
+        },
+        {
+            "index": 792,
+            "repoFullName": "crossfilter/crossfilter-async",
+            "creationDate": "2015-11-11",
+            "languages": {
+                "JavaScript": 117646
+            },
+            "stars": 35,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 4,
+                "promise": 3,
+                "async": 6
+            }
+        },
+        {
+            "index": 801,
+            "repoFullName": "lifeart/demo-async-dom",
+            "creationDate": "2017-09-05",
+            "languages": {
+                "JavaScript": 164043,
+                "HTML": 3295
+            },
+            "stars": 35,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 15,
+                "promise": 13,
+                "async": 21
+            }
+        },
+        {
+            "index": 895,
+            "repoFullName": "yangtao2o/node-blog-express-koa2",
+            "creationDate": "2019-03-05",
+            "languages": {
+                "JavaScript": 44959,
+                "HTML": 20178,
+                "CSS": 1000,
+                "Shell": 450
+            },
+            "stars": 29,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 3,
+                "promise": 7,
+                "async": 10
+            }
+        },
+        {
+            "index": 998,
+            "repoFullName": "jaredLunde/react-broker",
+            "creationDate": "2018-09-01",
+            "languages": {
+                "JavaScript": 20360
+            },
+            "stars": 25,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 1,
+                "promise": 2,
+                "async": 3
+            }
+        },
+        {
+            "index": 1024,
+            "repoFullName": "kyrylkov/promise-async-performance",
+            "creationDate": "2017-08-07",
+            "languages": {
+                "JavaScript": 27865,
+                "Shell": 553
+            },
+            "stars": 24,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 2,
+                "promise": 8,
+                "async": 9
+            }
+        },
+        {
+            "index": 1064,
+            "repoFullName": "PLG-Works/queue",
+            "creationDate": "2022-06-02",
+            "languages": {
+                "JavaScript": 46409
+            },
+            "stars": 23,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 5,
+                "promise": 6,
+                "async": 8
+            }
+        },
+        {
+            "index": 1187,
+            "repoFullName": "AlvaroBernalG/event-worker",
+            "creationDate": "2017-07-19",
+            "languages": {
+                "JavaScript": 10218
+            },
+            "stars": 19,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 5,
+                "promise": 6,
+                "async": 7
+            }
+        },
+        {
+            "index": 1218,
+            "repoFullName": "HowProgrammingWorks/AsynchronousProgramming",
+            "creationDate": "2016-08-16",
+            "languages": {
+                "JavaScript": 15505,
+                "C#": 6296
+            },
+            "stars": 18,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 11,
+                "promise": 6,
+                "async": 14
+            }
+        },
+        {
+            "index": 1233,
+            "repoFullName": "ali-essam/wtsqs",
+            "creationDate": "2018-01-26",
+            "languages": {
+                "JavaScript": 36061
+            },
+            "stars": 18,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 1,
+                "promise": 4,
+                "async": 5
+            }
+        },
+        {
+            "index": 1247,
+            "repoFullName": "DigitalBrainJS/use-async-effect",
+            "creationDate": "2021-01-04",
+            "languages": {
+                "JavaScript": 62590,
+                "HTML": 1250
+            },
+            "stars": 18,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 9,
+                "promise": 4,
+                "async": 11
+            }
+        },
+        {
+            "index": 1248,
+            "repoFullName": "niksy/isomorphic-timers-promises",
+            "creationDate": "2021-06-18",
+            "languages": {
+                "JavaScript": 22387
+            },
+            "stars": 18,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 1,
+                "promise": 2,
+                "async": 3
+            }
+        },
+        {
+            "index": 1249,
+            "repoFullName": "cronvel/async-kit",
+            "creationDate": "2014-03-19",
+            "languages": {
+                "JavaScript": 654464,
+                "Makefile": 3628,
+                "HTML": 275,
+                "CSS": 165
+            },
+            "stars": 17,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 8,
+                "promise": 3,
+                "async": 10
+            }
+        },
+        {
+            "index": 1264,
+            "repoFullName": "dsfields/couchbase-promises",
+            "creationDate": "2015-11-13",
+            "languages": {
+                "JavaScript": 155169
+            },
+            "stars": 17,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 10,
+                "promise": 9,
+                "async": 14
+            }
+        },
+        {
+            "index": 1327,
+            "repoFullName": "bhoriuchi/readline-promise",
+            "creationDate": "2016-02-23",
+            "languages": {
+                "JavaScript": 10709,
+                "TypeScript": 1069
+            },
+            "stars": 16,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 1,
+                "promise": 3,
+                "async": 4
+            }
+        },
+        {
+            "index": 1363,
+            "repoFullName": "americanexpress/one-service-worker",
+            "creationDate": "2020-03-27",
+            "languages": {
+                "JavaScript": 280026,
+                "HTML": 1012
+            },
+            "stars": 16,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 7,
+                "promise": 14,
+                "async": 19
+            }
+        },
+        {
+            "index": 1365,
+            "repoFullName": "callback-demons/callback-news",
+            "creationDate": "2020-04-30",
+            "languages": {
+                "JavaScript": 111737
+            },
+            "stars": 16,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 13,
+                "promise": 5,
+                "async": 14
+            }
+        },
+        {
+            "index": 1424,
+            "repoFullName": "Checkson/priority-async-queue",
+            "creationDate": "2019-07-26",
+            "languages": {
+                "JavaScript": 13174,
+                "HTML": 589
+            },
+            "stars": 15,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 4,
+                "promise": 5,
+                "async": 8
+            }
+        },
+        {
+            "index": 1630,
+            "repoFullName": "AsyncAF/AsyncAF",
+            "creationDate": "2017-10-10",
+            "languages": {
+                "JavaScript": 239255,
+                "Makefile": 2678
+            },
+            "stars": 12,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 20,
+                "promise": 51,
+                "async": 61
+            }
+        },
+        {
+            "index": 1753,
+            "repoFullName": "twilio-labs/plugin-queued-callbacks-and-voicemail",
+            "creationDate": "2020-08-03",
+            "languages": {
+                "JavaScript": 71964,
+                "Shell": 231
+            },
+            "stars": 11,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 14,
+                "promise": 4,
+                "async": 16
+            }
+        },
+        {
+            "index": 2182,
+            "repoFullName": "brn/sagu",
+            "creationDate": "2017-06-24",
+            "languages": {
+                "JavaScript": 38366
+            },
+            "stars": 8,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 6,
+                "promise": 5,
+                "async": 8
+            }
+        },
+        {
+            "index": 2243,
+            "repoFullName": "ANIname/directory-import",
+            "creationDate": "2019-07-30",
+            "languages": {
+                "JavaScript": 23143,
+                "HTML": 26,
+                "CSS": 21
+            },
+            "stars": 8,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 2,
+                "promise": 3,
+                "async": 4
+            }
+        },
+        {
+            "index": 2254,
+            "repoFullName": "nick-keller/lodasync",
+            "creationDate": "2020-03-29",
+            "languages": {
+                "JavaScript": 28553
+            },
+            "stars": 8,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 30,
+                "promise": 20,
+                "async": 36
+            }
+        },
+        {
+            "index": 2270,
+            "repoFullName": "elitedev201/JS-JWT-API",
+            "creationDate": "2022-02-24",
+            "languages": {
+                "JavaScript": 112995,
+                "HTML": 560,
+                "Shell": 368
+            },
+            "stars": 8,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 6,
+                "promise": 42,
+                "async": 46
+            }
+        },
+        {
+            "index": 3093,
+            "repoFullName": "byteshiva/es6-tuts",
+            "creationDate": "2018-06-27",
+            "languages": {
+                "JavaScript": 3619405,
+                "WebAssembly": 252718,
+                "HTML": 128589,
+                "C": 20069,
+                "Rust": 3892,
+                "Makefile": 3363,
+                "Shell": 1868,
+                "Python": 1325,
+                "LLVM": 1177,
+                "Assembly": 1023,
+                "TypeScript": 980,
+                "C++": 615,
+                "Roff": 509,
+                "Go": 208,
+                "Dockerfile": 67
+            },
+            "stars": 5,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 9,
+                "promise": 7,
+                "async": 14
+            }
+        },
+        {
+            "index": 3122,
+            "repoFullName": "dandgerson/async-pattern",
+            "creationDate": "2019-02-06",
+            "languages": {
+                "JavaScript": 11496,
+                "HTML": 1389
+            },
+            "stars": 5,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 5,
+                "promise": 3,
+                "async": 7
+            }
+        },
+        {
+            "index": 3161,
+            "repoFullName": "Sykander/iterable-async",
+            "creationDate": "2019-12-06",
+            "languages": {
+                "JavaScript": 44180
+            },
+            "stars": 5,
+            "issues": null,
+            "commits": null,
+            "async_files_count": {
+                "callback": 18,
+                "promise": 10,
+                "async": 22
+            }
+        }
+    ]
+}

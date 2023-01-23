@@ -1,7 +1,7 @@
 {
     "language": "JavaScript",
     "total_count": 3228,
-    "time_period": "Start date: 2013-01-01, end date: 2023-01-01",
+    "time_period": "Start date: 2013-12-24, end date: 2023-01-01",
     "incomplete_results": false,
     "status_code": "200",
     "repositories": [

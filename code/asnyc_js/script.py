@@ -46,7 +46,7 @@ class Sampling:
             # Check if we need a timeout because of the low request limit of 5000 per hour to GitHub. If the intermediate results are saved.
             if sampling.timeOut(timeOut, 30):
                 fileClass.writeToFile(
-                    str(self.language) + "Repos.txt",
+                    "repositories_data/" + str(self.language) + "Repos.txt",
                     sampling.repoJsons(
                         reposCounter,
                         self.incompleteResult,
@@ -84,6 +84,7 @@ class Sampling:
                                 responseRepos["stargazers_count"],
                                 None,
                                 None,
+                                None,
                             )
                         )
 
@@ -95,7 +96,7 @@ class Sampling:
                     print("error on repo requests. Current date: " + str(currentDate))
 
         fileClass.writeToFile(
-            str(self.language) + "Repos.txt",
+            "repositories_data/" + str(self.language) + "Repos.txt",
             sampling.repoJsons(
                 reposCounter, self.incompleteResult, self.errorCode, repositories
             ),
@@ -177,7 +178,7 @@ class Sampling:
     def sortReposByStars(self):
         """Sorts the repo list by stars and gives each repo an id."""
         print("started")
-        reposList = fileClass.openFile(str(self.language) + "Repos.txt")
+        reposList = fileClass.openFile("repositories_data/" + str(self.language) + "Repos.txt")
         repos = reposList["repositories"]
 
         sortedRepos = sorted(repos, key=lambda repo: repo["stars"], reverse=True)
@@ -189,7 +190,7 @@ class Sampling:
             index += 1
 
         fileClass.writeToFile(
-            str(self.language) + "Repos.txt",
+            "repositories_data/" + str(self.language) + "Repos.txt",
             sampling.repoJsons(
                 reposList["total_count"],
                 reposList["incomplete_results"],
@@ -216,7 +217,7 @@ class Sampling:
         asyncRepos = []
         uncategorizedRepos = []
 
-        reposList = fileClass.openFile(str(self.language) + "Repos.txt")
+        reposList = fileClass.openFile("repositories_data/" + str(self.language) + "Repos.txt")
         async_keywords = ["callback", "promise", "async"]
 
         for repo in reposList["repositories"]:
@@ -228,7 +229,7 @@ class Sampling:
 
             if sampling.timeOut(timeOut, 5):
                 fileClass.writeToFile(
-                    "PromiseRepos.txt",
+                    "repositories_data/PromiseRepos.txt",
                     sampling.repoJsons(
                         promiseCounter,
                         reposList["incomplete_results"],
@@ -237,7 +238,7 @@ class Sampling:
                     ),
                 )
                 fileClass.writeToFile(
-                    "CallbackRepos.txt",
+                    "repositories_data/CallbackRepos.txt",
                     sampling.repoJsons(
                         callbackCounter,
                         reposList["incomplete_results"],
@@ -246,7 +247,7 @@ class Sampling:
                     ),
                 )
                 fileClass.writeToFile(
-                    "AsyncRepos.txt",
+                    "repositories_data/AsyncRepos.txt",
                     sampling.repoJsons(
                         asyncCounter,
                         reposList["incomplete_results"],
@@ -255,7 +256,7 @@ class Sampling:
                     ),
                 )
                 fileClass.writeToFile(
-                    "UncategorizedRepos.txt",
+                    "repositories_data/UncategorizedRepos.txt",
                     sampling.repoJsons(
                         uncategorizedCounter,
                         reposList["incomplete_results"],
@@ -349,7 +350,135 @@ class Sampling:
                         files_count_json,
                     )
                 )
+
         print("categorized")
+
+    def reUncategorized(self):
+        print("Started re-categorize repos from UncategorizedRepos.")
+
+        promiseCounter = 0
+        callbackCounter = 0
+        asyncCounter = 0
+        equalCounter = 0
+        promiseRepos = []
+        callbackRepos = []
+        asyncRepos = []
+        equal_appearance = []
+
+        reposList = fileClass.openFile("repositories_data/UncategorizedRepos.txt")
+
+        for repo in reposList["repositories"]:
+            async_files = repo["async_files_count"]
+
+            callback_value = async_files["callback"]
+            promise_value = async_files["promise"]
+            async_value = async_files["async"]
+
+            print("Promise: ", async_files["callback"])
+            print("Promise: ", async_files["promise"])
+            print("Async", async_files["async"])
+
+            if callback_value == promise_value or callback_value == async_value or promise_value == async_value:
+                equalCounter += 1
+                equal_appearance.append(
+                    sampling.repoKey(
+                        repo["index"],
+                        repo["repoFullName"],
+                        repo["creationDate"],
+                        repo["languages"],
+                        repo["stars"],
+                        None,
+                        None,
+                        repo["async_files_count"],
+                    ),
+                )
+                print("CONTINUE")
+                continue
+
+            max_appearance = max(async_files["callback"], async_files["promise"], async_files["async"])
+            print(max_appearance)
+
+            if max_appearance == async_files["callback"]:
+                callbackCounter += 1
+                callbackRepos.append(
+                    sampling.repoKey(
+                        repo["index"],
+                        repo["repoFullName"],
+                        repo["creationDate"],
+                        repo["languages"],
+                        repo["stars"],
+                        None,
+                        None,
+                        repo["async_files_count"],
+                    ),
+                )
+            elif max_appearance == async_files["promise"]:
+                promiseCounter += 1
+                promiseRepos.append(
+                    sampling.repoKey(
+                        repo["index"],
+                        repo["repoFullName"],
+                        repo["creationDate"],
+                        repo["languages"],
+                        repo["stars"],
+                        None,
+                        None,
+                        repo["async_files_count"],
+                    ),
+                )
+            elif max_appearance == async_files["async"]:
+                asyncCounter += 1
+                asyncRepos.append(
+                    sampling.repoKey(
+                        repo["index"],
+                        repo["repoFullName"],
+                        repo["creationDate"],
+                        repo["languages"],
+                        repo["stars"],
+                        None,
+                        None,
+                        repo["async_files_count"],
+                    ),
+                )
+
+        fileClass.writeToFile(
+            "repositories_data/PromiseRepos_Uncategorizable.txt",
+            sampling.repoJsons(
+                promiseCounter,
+                reposList["incomplete_results"],
+                reposList["status_code"],
+                promiseRepos,
+            ),
+        )
+        fileClass.writeToFile(
+            "repositories_data/CallbackRepos_Uncategorizable.txt",
+            sampling.repoJsons(
+                callbackCounter,
+                reposList["incomplete_results"],
+                reposList["status_code"],
+                callbackRepos,
+            ),
+        )
+        fileClass.writeToFile(
+            "repositories_data/AsyncRepos_Uncategorizable.txt",
+            sampling.repoJsons(
+                asyncCounter,
+                reposList["incomplete_results"],
+                reposList["status_code"],
+                asyncRepos,
+            ),
+        )
+        fileClass.writeToFile(
+            "repositories_data/Equal_Uncategorizable.txt",
+            sampling.repoJsons(
+                promiseCounter,
+                reposList["incomplete_results"],
+                reposList["status_code"],
+                equal_appearance,
+            ),
+        )
+
+        print("Re-categorized.")
 
 
 class File:
@@ -396,4 +525,4 @@ fileClass = File()
 
 sampling = Sampling("JavaScript")
 
-sampling.categorizeAsyncRepos()
+sampling.reUncategorized()
