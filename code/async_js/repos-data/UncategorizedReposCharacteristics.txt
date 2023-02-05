@@ -1,0 +1,184 @@
+{
+     "language": "js",
+     "construct": "uncategorized",
+     "total_count": 1,
+     "time_period": "Start date: 2013-01-01, end date: 2023-01-01",
+     "incomplete_results": false,
+     "status_code": "200",
+     "repositories": [
+          {
+               "index": 14,
+               "repoFullName": "developit/unfetch",
+               "creationDate": "2017-02-22",
+               "languages": {
+                    "JavaScript": 10053,
+                    "TypeScript": 1611
+               },
+               "stars": 5460,
+               "issues": {
+                    "incomplete_results": false,
+                    "status_code": "200",
+                    "total_bug_issues": 7,
+                    "total_issues": 64,
+                    "issues": [
+                         {
+                              "title": "got url.replace is not a function",
+                              "description": "I'm getting this error while doing a `yarn build` on a preact-cli project Complete message is\r\n```\r\n✖ ERROR TypeError: url.replace is not a function\r\n    at /home/edorka/develop/nsp/node_modules/isomorphic-unfetch/index.js:3:36\r\n```\r\nProbably this is because code doesn't expect to get URL as an object this would be a quick fix:\r\n```\r\nmodule.exports = global.fetch = global.fetch || (\r\n\ttypeof process=='undefined' ? (require('unfetch').default || require('unfetch')) : (function(url, opts) {\r\n                const target = url.href ? url.href : url;\r\n\t\treturn require('node-fetch')(target.replace(/^\\/\\//g,'https://'), opts);\r\n\t})\r\n);\r\n```",
+                              "label": "unlabeledBug",
+                              "createdAt": "2020-08-31T07:24:11Z",
+                              "closedAt": "2020-09-29T13:07:29Z",
+                              "lastComment": "2020-09-09T23:43:54Z",
+                              "commentCount": 1
+                         },
+                         {
+                              "title": "Webpack: isomorphic-unfetch breaks node build due to wrong esm interop.",
+                              "description": "### Bug Report\r\n\r\nRequiring `isomorphic-unfetch` in a project built with Webpack targeting node leads to broken code. The issue is due to wrong interoperation between cjs & esm by `isomorphic-unfetch`.\r\n\r\n###  How to Reproduce\r\n\r\n```\r\n$ mkdir bug-repro && cd bug-repro\r\n$ yarn init -y\r\n$ yarn add isomorphic-unfetch webpack webpack-cli\r\n$ echo \"require('isomorphic-unfetch')('https://goo.gl').then(console.log)\" > index.js\r\n$ npx webpack index.js --target node --mode development\r\n$ node dist/main.js\r\n```\r\n\r\n### Expected Result\r\n\r\n```\r\n> Response {\r\n  ...\r\n}\r\n```\r\n\r\n### Actual Result\r\n\r\n```\r\nwebpack:///./node_modules/isomorphic-unfetch/index.js?:3\r\n\t\treturn __webpack_require__(/*! node-fetch */ \"./node_modules/node-fetch/lib/index.mjs\")(url.replace(/^\\/\\//g,'https://'), opts);\r\n\t\t                                                                                       ^\r\n\r\nTypeError: __webpack_require__(...) is not a function\r\n```\r\n\r\n### Context\r\n\r\nIn file `packages/isomorphic-unfetch/index.js`, you can find the following code: `require('node-fetch')`. However, the package `node-fetch` exposes the function `fetch` as the default export in an ESM module [1]. The correct way of requiring a default export from CommonJS is `require('node-fetch').default`; see [2].\r\n\r\n[1] https://github.com/bitinn/node-fetch/blob/master/src/index.js#L34\r\n[2] https://github.com/bitinn/node-fetch/issues/450#issuecomment-462695245\r\n\r\n### Environment\r\n\r\n```\r\n→ lsb_release -a\r\nDescription:\tUbuntu 18.04.2 LTS\r\n→ node --version\r\nv10.15.3\r\n→ yarn --version\r\n1.15.2\r\n→ npm ls isomorphic-unfetch webpack\r\nbug-repro@1.0.0\r\n├── isomorphic-unfetch@3.0.0 \r\n└── webpack@4.39.2\r\n```",
+                              "label": "bug",
+                              "createdAt": "2019-08-24T17:16:45Z",
+                              "closedAt": "2020-02-19T03:36:04Z",
+                              "lastComment": "2020-09-29T17:59:05Z",
+                              "commentCount": 5
+                         },
+                         {
+                              "title": "Arrow function breaks IE compatibility",
+                              "description": "The following arrow function breaks compatibility with IE8+:\r\n\r\nhttps://github.com/developit/unfetch/blob/1670b30b541ee9209c58653c550cf07489609cb9/src/index.mjs#L3\r\n\r\nI don't know if this is something you are willing to fix, if not the following should probably be removed from the README:\r\n> Supported: supports IE8+ (assuming Promise is polyfilled of course!)",
+                              "label": "unlabeledBug",
+                              "createdAt": "2018-10-16T13:02:36Z",
+                              "closedAt": "2018-10-16T13:18:13Z",
+                              "lastComment": "2018-10-17T07:07:12Z",
+                              "commentCount": 3
+                         },
+                         {
+                              "title": "Is the typescript definition exported correctly?",
+                              "description": "I'm having trouble with unfetch >= 3.1.1. The new TypeScript definition actually broke our build, and I'm not sure how to fix it.\r\n\r\nThe change was made in PR https://github.com/developit/unfetch/pull/89, in which the default export was removed from `src/index.d.ts`. Was this intentional? The PR is named \"Fix _isomorphic-unfetch_ definition\" but `packages/isomorphic-unfetch/index.d.ts` is not changed, instead `src/index.d.ts` was changed.\r\n\r\nSince `src/index.mjs` export default, shouldn't `src/index.d.ts` also export default?\r\n",
+                              "label": "unlabeledBug",
+                              "createdAt": "2018-10-15T11:10:33Z",
+                              "closedAt": "2019-01-14T17:24:51Z",
+                              "lastComment": "2020-07-15T11:34:40Z",
+                              "commentCount": 8
+                         },
+                         {
+                              "title": "Issue with Safari Mobile on iOS 9",
+                              "description": "I'm using preact-cli default set up and unfetch doesn't work there.\r\nDevice: iPhone 5S\r\nSafari user-agent: `Mozilla/5.0 (iPhone; CPU iPhone OS 9_2_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13D15 Safari/601.1`\r\n\r\nI hope I can give more details but I'm using Ubuntu laptop and debugging it via [ios-webkit-debug-proxy](https://github.com/google/ios-webkit-debug-proxy) so I have no access to console.log (or whatever).\r\n\r\nSwitch to `isomorphic-fetch` and it works again \r\n\r\n",
+                              "label": "unlabeledBug",
+                              "createdAt": "2017-05-28T13:35:15Z",
+                              "closedAt": "2017-06-28T15:20:35Z",
+                              "lastComment": "2017-06-28T15:20:35Z",
+                              "commentCount": 5
+                         },
+                         {
+                              "title": "Empty isomorphic-unfetch package",
+                              "description": "I tried to write a unit test for my Browser application that does not run in the Browser but in my Bash with [ava](https://github.com/avajs/ava) or [tape](https://github.com/substack/tape). I'm using `unfetch` as a ponyfill by the way.\r\n\r\nSo my tests are crashing because it cannot find `XMLHttpRequest`. I looked at your source code here and found out that there is a `isomorphic-unfetch`. Great! So I can import `isomorphic-unfetch` in my app and it should run in the Browser **and** in my tests that run in a NodeJS environment.\r\n\r\nUnfortunately the package on [npm](https://www.npmjs.com/package/isomorphic-unfetch) is empty.\r\n\r\n![untitled](https://cloud.githubusercontent.com/assets/149248/24080508/532c8e06-0ca1-11e7-919b-f91876f00c08.png)\r\n",
+                              "label": "bug",
+                              "createdAt": "2017-03-19T11:42:28Z",
+                              "closedAt": "2017-03-19T15:08:29Z",
+                              "lastComment": "2017-03-19T15:08:34Z",
+                              "commentCount": 2
+                         },
+                         {
+                              "title": "unfetch/polyfill doesn’t work in webpack 2",
+                              "description": "When I do:\r\n\r\n```js\r\nimport 'unfetch/polyfill';\r\n```\r\n\r\nI see this error in Safari 10:\r\n\r\n> TypeError: fetch is not a function.\r\n\r\nBecause `fetch` is actually a ES module wrapper:\r\n\r\n```js\r\n{__esModule: true, default: function}\r\n```\r\n\r\nI suppose it’s because you have `require('.')` in `polyfll.js` and webpack 2 resolves it to `index.es.js`. So this code works for me:\r\n\r\n```js\r\nif (!window.fetch) {\r\n    window.fetch = require('unfetch').default;\r\n}\r\n```\r\n\r\nI’d be happy to submit a PR but not sure what would be the right fix for this.",
+                              "label": "bug",
+                              "createdAt": "2017-03-02T09:31:52Z",
+                              "closedAt": "2017-03-03T14:33:28Z",
+                              "lastComment": "2017-04-03T01:07:06Z",
+                              "commentCount": 9
+                         }
+                    ]
+               },
+               "commits": {
+                    "incomplete_results": false,
+                    "status_code": "200",
+                    "total_bug_commits": 16,
+                    "total_commits": 84,
+                    "bug_commits": [
+                         {
+                              "message": "fix Jest and ESM issues from #156",
+                              "created_at": "2022-12-31T02:46:27Z",
+                              "sha": "56a676543b09833dd1618d23a7d0c909aeda4254"
+                         },
+                         {
+                              "message": "Merge branch 'fix/update-node-fetch' of https://github.com/RishikeshDarandale/unfetch into RishikeshDarandale-fix/update-node-fetch",
+                              "created_at": "2022-12-30T23:55:52Z",
+                              "sha": "5d6342b905ca3fa8aa7a48d5ba69b4da946a5c4b"
+                         },
+                         {
+                              "message": "fix: update node-fetch to 3.x\n\nnode-fetch is now ESM module only, thus this will be a breaking change\nand will requires at least Node.js 12.20.0.\n\nAs suggested[1] by `node-fetch`, async import() function is used to load\n`node-fetch` asynchronously.\n\nBREAKING CHANGE: requires at least node 12.20.0\n\n[1]: https://github.com/node-fetch/node-fetch#commonjs",
+                              "created_at": "2022-02-03T09:29:42Z",
+                              "sha": "385868d9f7d78f4b95e8ee4659c191df8d112f68"
+                         },
+                         {
+                              "message": "fix tests",
+                              "created_at": "2020-09-29T17:44:21Z",
+                              "sha": "fb03f908a3ed7f0af284676e76096d22a4543abb"
+                         },
+                         {
+                              "message": "Merge pull request #133 from developit/fix-node-fetch\n\nAccount for node-fetch exporting default. Fixes #122",
+                              "created_at": "2020-02-19T03:36:02Z",
+                              "sha": "1436c368aa77f809445cde2c4d7b7ca71837bc20"
+                         },
+                         {
+                              "message": "Merge pull request #130 from seiry/master\n\nfix a require error in Rax babel config scenes",
+                              "created_at": "2020-02-18T15:44:11Z",
+                              "sha": "c8e55fb4f0c841411b7c0765c8dbe263283976f5"
+                         },
+                         {
+                              "message": "fix a require error in Rax babel config scenes",
+                              "created_at": "2020-02-06T12:24:57Z",
+                              "sha": "8a57ed7dc0b5c58416aa3065bdbfd8c515cec75a"
+                         },
+                         {
+                              "message": "Merge pull request #85 from khusa/fix-ie11-undefined-body-issue\n\nUse null as request body if options.body is undefined",
+                              "created_at": "2018-09-13T13:19:48Z",
+                              "sha": "7ee8964f07cd6a1c66b040e6a4153f97932fba96"
+                         },
+                         {
+                              "message": "Use null as request body if options.body is undefined\n\nThis fixes an issue with IE11 http delete when body is missing.\n(See also: https://github.com/axios/axios/issues/248)",
+                              "created_at": "2018-08-02T10:27:28Z",
+                              "sha": "588bddb7c1a4d6546b4fd8ccd303e26e5cb1f6bf"
+                         },
+                         {
+                              "message": "Merge pull request #67 from patrickhulce/fix_tests\n\nfix: handle 0-length header values and trim whitespace",
+                              "created_at": "2018-07-20T02:26:06Z",
+                              "sha": "504903ae025cf36c5d14dd3f4fc8561bc5511b30"
+                         },
+                         {
+                              "message": "fix: handle 0-length header values and trim whitespace",
+                              "created_at": "2018-04-16T20:37:39Z",
+                              "sha": "b7bc09db5bc165aa10ac2d771babd5e2b15f02ac"
+                         },
+                         {
+                              "message": "Merge pull request #53 from nikoladev/response-ok-fix\n\nFix error: response.ok should equal false for status codes in the 300-399 range",
+                              "created_at": "2017-10-20T18:06:00Z",
+                              "sha": "733717f3318d569b1d8d0274518f5c0efd128ee8"
+                         },
+                         {
+                              "message": "fix response.ok to equal true only for status codes in the 200 range",
+                              "created_at": "2017-09-29T12:13:35Z",
+                              "sha": "db1866e29fa521a5c904f15a3bf020b4f02f1755"
+                         },
+                         {
+                              "message": "Merge pull request #47 from jhnns/fix/illegal-invocation\n\nFix illegal invocation errors",
+                              "created_at": "2017-06-28T14:39:46Z",
+                              "sha": "04c6d249cd3ab419f55d4bd6cedc83bd505fc374"
+                         },
+                         {
+                              "message": "Merge branch 'master' into fix/illegal-invocation",
+                              "created_at": "2017-06-28T14:38:58Z",
+                              "sha": "8e1940a097b52e7ca9260d450f48ba6649247d86"
+                         },
+                         {
+                              "message": "Incorporate fix for #18",
+                              "created_at": "2017-02-23T17:44:34Z",
+                              "sha": "621d7596f497934693dff9708e3a71f3b59f2eff"
+                         }
+                    ]
+               },
+               "async_constructs": {
+                    "callback": 1,
+                    "promise": 1,
+                    "async": 1
+               }
+          }
+     ]
+}
