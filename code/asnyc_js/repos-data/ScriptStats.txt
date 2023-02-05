@@ -1,0 +1,5 @@
+{
+     "checked_repos": "First checked repo: 6, last checkedRepo39",
+     "lost_repos": 0,
+     "checkNextIndex": 17
+}
