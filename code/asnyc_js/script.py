@@ -10,6 +10,8 @@ from urllib3.util import Retry
 from requests.adapters import HTTPAdapter
 from git import Repo
 import pandas as pd
+import csv
+import subprocess
 
 
 class Sampling:
@@ -1009,7 +1011,7 @@ class Sampling:
         Returns:
             boolean: If the text contains a bug.
         """
-        bug_words = ["bug", "fix"]
+        bug_words = ["bug", "fix", "submit"]
 
         if any(bug in text for bug in bug_words):
             return True
@@ -1230,7 +1232,352 @@ class CloneRepo:
                     print("Problem during cloning: " + str(inst))
             else:
                 print("Already cloned")
-        print("Done")
+        print("Done cloning.")
+
+
+class CSV:
+    """Handles all csv related functions."""
+
+    def __init__(self, construct, fileSuffix):
+        """
+
+        :param construct: The asynchronous construct for which the functions from this class should be executed.
+        :param fileSuffix:
+        """
+        self.curConstruct = construct
+        self.fileSuffix = fileSuffix
+        pass
+
+    def createAndInitCSV(self):
+        """Creates csv and adds default values."""
+        if not os.path.isfile(str(self.curConstruct) + self.fileSuffix):
+            commaSeparatedValues.createCSV()
+            commaSeparatedValues.initCSV()
+
+    def changeValueInCSV(self, rowIndex, columnName, value):
+        """
+        Args:
+            rowIndex (integer): Index of csv row.
+            columnName (integer): Number of csv column.
+            value (integer or string): Value to be changed in csv.
+        """
+        df = pd.read_csv(str(self.curConstruct) + self.fileSuffix)
+
+        df.at[rowIndex - 1, columnName] = value
+
+        df.to_csv(str(self.curConstruct) + self.fileSuffix, index=False)
+
+    def createCSV(self):
+        """Creates csv file with file suffix defined in constructor."""
+        with open(str(self.curConstruct) + self.fileSuffix, "a+", newline="") as f:
+            writer = csv.writer(f)
+
+            writer.writerow(
+                self.getHEADER(
+                    "CalculatedVals.csv"
+                    if self.fileSuffix.endswith("CalculatedVals.csv")
+                    else self.fileSuffix
+                )
+            )
+            f.close()
+
+    def getHEADER(self, type):
+        switch = {
+            "ReposCharacteristics.csv": constants.REPOSCHARACTERISTICS,
+            "Metrics.csv": constants.METRICS,
+            "CalculatedVals.csv": constants.CALCULATEDVALS,
+        }
+        return switch.get(type, "No such column in csv")
+
+    def getCSVRowIndexMetricFramework(self, calculatedValueType):
+        switch = {
+            "count": 1,
+            "mean": 2,
+            "std": 3,
+            "min": 4,
+            "25%": 5,
+            "50%": 6,
+            "75%": 7,
+            "max": 8,
+        }
+        return switch.get(calculatedValueType, "No such column in csv")
+
+    def getCSVColumnIndexData(self, columnName):
+        switch = {
+            "ncloc": 2,
+            "code_smells": 3,
+            "any-type_count": 4,
+            "cognitive_complexity": 5 if self.curConstruct == "TypeScript" else 4,
+            "framework": 6 if self.curConstruct == "TypeScript" else 5,
+            "bug_issues_count": 7 if self.curConstruct == "TypeScript" else 6,
+            "bug-fix_commits_count": 8 if self.curConstruct == "TypeScript" else 7,
+            "commits_count": 9 if self.curConstruct == "TypeScript" else 8,
+        }
+        return switch.get(columnName, "No such column in csv")
+
+    def getCSVColumnIndexMetric(self, columnName):
+        switch = {
+            "code-smells_ncloc": 2,
+            "bug-fix-commits_ratio": 3,
+            "avg_bug-issue_time": 4,
+            "cognitive-complexity_ncloc": 5,
+            "any-type-count_ncloc": 6,
+        }
+        return switch.get(columnName, "No such column in csv")
+
+    def initCSV(self):
+        """Adds values (index and repo name) from json to csv."""
+        repoFile = fileClass.openFile(self.curConstruct + "ReposCharacteristics.txt")
+        print("Add repos from json to csv without values")
+        for repo in repoFile["repositories"]:
+            commaSeparatedValues.writeInitToCSV(repo["index"], repo["repoFullName"])
+        print("All repos added to csv")
+
+    def writeInitToCSV(self, index, repoName):
+        """Writes index and repo name to csv.
+
+        Args:
+            index (integer): Id from repo.
+            repoName (string): Full repo name.
+        """
+        with open(str(self.curConstruct) + self.fileSuffix, "a+", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow([index, repoName])
+            f.close()
+
+    def addColumnWithDefaultText(self, columnName, defaultText):
+        """Add new column with default text. Needs to be added at getCSVColumnIndexData().
+
+        Args:
+            columnName (string): Name of the new column.
+            defaultText (string): Default text.
+        """
+        df = pd.read_csv(str(self.curConstruct) + self.fileSuffix)
+        print(f"Create column: {columnName} with default text: {defaultText}")
+
+        df[columnName] = defaultText
+        df.to_csv(str(self.curConstruct) + self.fileSuffix, index=False)
+        print(
+            f"Please add {columnName} to getCSVColumnIndexData() with index to change later values via code"
+        )
+
+    def deleteRowAndCorrectIndex(self, index):
+        """
+        Args:
+            index (integer): Index of repo and not of csv.
+        """
+        print(f"delete index: {index}")
+        df = pd.read_csv(str(self.curConstruct) + self.fileSuffix)
+        df.drop(index - 1, axis=0, inplace=True)
+        for row in range(index, len(df.index) + 1):
+            df.loc[row, "index"] = row
+        df.to_csv(str(self.curConstruct) + self.fileSuffix, index=False)
+
+        print("Maybe you need to delete this element from the .txt (json) too!")
+
+    def getCSVcolumnValues(self, columnIndex, fileName):
+        """
+        Args:
+            columnIndex (integer): Index of repo and not of csv.
+            fileName (string): Complete filename with pl.
+
+        Returns:
+            integer: Value of csv.
+        """
+        df = pd.read_csv(fileName)
+
+        values = []
+        for row in range(0, len(df.index)):
+            values.append(df.values[row][columnIndex])
+
+        return values
+
+    def deleteColumn(self, columnName):
+        """
+        Args:
+            columnName (string): Name of the column to be deleted.
+        """
+        df = pd.read_csv(str(self.curConstruct) + self.fileSuffix)
+
+        df.drop(columnName, inplace=True, axis=1)
+
+        df.to_csv(str(self.curConstruct) + self.fileSuffix, index=False)
+
+    def sumColumn(self, columnName, fileName):
+        """Summs up all values of a column that are not inf value.
+
+        Args:
+            columnName (string): Name of the column.
+            fileName (string): Complete filename with pl.
+
+        Returns:
+            integer: Sum of all values that are not inf from the column.
+        """
+        df = pd.read_csv(fileName)
+
+        sum = 0
+        for row in df[columnName]:
+            if row == float("inf"):
+                continue
+            sum += row
+
+        print(sum)
+        return sum
+
+    def describeColumn(self, columnName, fileName):
+        """Calulates values (count, mean, std, min, 25%, 50%, 75%, max) of a column.
+
+        Args:
+            columnName (string): Name of the column.
+            fileName (string): Complete filename with pl.
+        """
+        df = pd.read_csv(fileName)
+        print(df.loc[(df[columnName] < float("inf"))][columnName].describe())
+
+
+class ESLint:
+    """To check if repo is categorized correctly, ESLint needs to be installed and executed for each JavaScript repo."""
+
+    def __init__(self, construct):
+        """
+        :param construct: The asynchronous construct for which the functions from this class should be executed.
+        """
+        self.curConstruct = construct
+        self.repoFullName = ""
+        pass
+
+    def createEslintReport(self, startIndex, endIndex):
+        """Function for the whole ESLint process.
+        Steps:
+            1. delete existing ESLint files,
+            2. rename existing package.json,
+            3. copy default ESLint config into project root,
+            4. delete new created package.json config and rename old one,
+            5. install and run ESLint,
+            6. read report and save value in csv.
+
+        Args:
+            startIndex (integer): The index of the repository of the refined list at which the analysis is to be started.
+            endIndex (integer): The index of the repository of the refined list at which the analysis is to be ended.
+        """
+        file = fileClass.openFile(self.curLanguage + "ReposCharacteristics.txt")
+        for repo in file["repositories"]:
+            if startIndex > repo["index"] or endIndex < repo["index"]:
+                continue
+            self.repoFullName = repo["repoFullName"].replace("/", "-")
+
+            eslint.deleteExistingEslint(eslint.findAllEslintFilesInDir())
+            packageJson.renamePackageJson(self.repoFullName)
+            eslint.copyLintConfigInDir()
+            eslint.runEslint()
+            anyCount = eslint.readReport()
+            print("Any-count: " + str(anyCount))
+            packageJson.deletePackageJson(self.repoFullName)
+            commaSeparatedValues.changeValueInCSV(
+                repo["index"], "any-type_count", anyCount
+            )
+
+    def findAllEslintFilesInDir(self):
+        """Get paths of existing ESLint files.
+
+        Returns:
+            list: List of all existing ESLint paths.
+        """
+        print("find all eslints")
+        filesDir = []
+
+        for path in constants.ESLINTPATHS:
+            for root, dirs, files in os.walk("./git-repos/TS/" + self.repoFullName):
+                for file in files:
+                    if file.endswith(path):
+                        filesDir.append(os.path.join(root, file))
+        print(filesDir)
+        return filesDir
+
+    def deleteExistingEslint(self, dirs):
+        """Delete all paths of ESLint files.
+
+        Args:
+            dirs (list): Paths that will be deleted.
+        """
+        print("delete existing eslint config")
+        for dir in dirs:
+            print(dir)
+            os.remove(dir)
+        print("deletion finished")
+
+    def copyLintConfigInDir(self):
+        """Copy default ESLint config file into root of repo."""
+        print("copy new eslint config")
+        for file in constants.ESLINTFILES:
+            shutil.copy(
+                file,
+                "./git-repos/JS/"
+                if self.curLanguage == "JavaScript"
+                else "./git-repos/TS/" + f"{self.repoFullName}/.eslintignore",
+            )
+            shutil.copy(
+                file,
+                "./git-repos/JS/"
+                if self.curLanguage == "JavaScript"
+                else "./git-repos/TS/" + f"{self.repoFullName}/.eslintrc.js",
+            )
+        print("copy finished")
+
+    def runEslint(self):
+        """Installs the typescript eslint plugin and runs the analysis. If it is a react project the .tsx extension is analysed too. Saves the report in folder."""
+        os.chdir(
+            "./git-repos/JS/"
+            if self.curLanguage == "JavaScript"
+            else "./git-repos/TS/" + f"{self.repoFullName}"
+        )
+        print("install")
+        try:
+            subprocess.check_call(
+                "npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin --force",
+                shell=True,
+            )
+        except subprocess.CalledProcessError as e:
+            print("error on installation")
+        print("install finished")
+        try:
+            print(os.getcwd())
+            subprocess.check_call(
+                f'npx eslint . --ext .ts,.tsx -o "../../../eslint/eslintReports/eslint_output_{self.repoFullName}.txt"',
+                shell=True,
+            )
+        except subprocess.CalledProcessError as e:
+            if str(e).endswith("1."):
+                print("Eslint report created")
+            else:
+                try:
+                    print(os.getcwd())
+                    subprocess.check_call(
+                        f'npx eslint . --ext .ts -o "../../../eslint/eslintReports/eslint_output_{self.repoFullName}.txt"',
+                        shell=True,
+                    )
+                except subprocess.CalledProcessError as e:
+                    print("Eslint report created") if str(e).endswith("1.") else print(
+                        "Can't create eslint report!"
+                    )
+
+    def readReport(self):
+        """Reads the saved eslint report and investigates how often the any type was used.
+
+        Returns:
+            string: The number of used any types.
+        """
+        try:
+            with open(
+                    f"./../../../eslint/eslintReports/eslint_output_{self.repoFullName}.txt"
+            ) as f:
+                contents = f.readlines()
+                os.chdir(f"./../../../")
+                return str(contents).count("Unexpected any. Specify a different type")
+        except FileNotFoundError:
+            os.chdir(f"./../../../")
+            print("error on read file")
+            return 0
 
 
 # Initialize Sampling object
@@ -1254,11 +1601,16 @@ sampling = Sampling()
 # sampling.checkRepoByCharacteristics("Async", 1, 975)
 # sampling.checkRepoByCharacteristics("Callback", 1, 1164)
 # sampling.checkRepoByCharacteristics("Promise", 1, 980)
-# sampling.checkRepoByCharacteristics("Uncategorized", 1, 666)
 
 # Cloning Repos from GitHub
-cloning = CloneRepo("Async")
-cloning.cloneRepoFromList()
+# cloning = CloneRepo("Async")
+# cloning = CloneRepo("Callback")
+# cloning = CloneRepo("Promise")
+# cloning.cloneRepoFromList()
+
+# Check categorization of cloned repos
+eslint = ESLint("TypeScript")
+commaSeparatedValues = CSV("Metrics.csv")
 
 # CHECKING
 # sampling.checkApiLimit(constants.USERNAME1, constants.TOKEN1)

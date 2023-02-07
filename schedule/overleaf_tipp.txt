@@ -1,5 +1,0 @@
-Zitate Overleaf: 
-
-\citet{WSPA} = mit Autorenangabe: Weerawarana et al. [WCL+05]
-
-Zitiert auf Seite = Sprung auf die Seite wo dieses Zitat genutzt wurde 

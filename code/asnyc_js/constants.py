@@ -45,3 +45,35 @@ REPOSCHARACTERISTICS = [
     "bug-fix_commits_count",
     "commits_count",
 ]
+
+METRICS = [
+    "index",
+    "repo_name",
+    "code-smells_ncloc",
+    "bug-fix-commits_ratio",
+    "avg_bug-issue_time",
+    "cognitive-complexity_ncloc",
+]
+
+CALCULATEDVALS = [
+    "",
+    "react",
+    "angular",
+    "vue",
+    "others"
+]
+
+ESLINTPATHS = [
+    ".eslintrc",
+    ".eslintrc.json",
+    ".eslintrc.js",
+    ".eslintrc.cjs",
+    ".eslintignore",
+    ".eslintrc.yml",
+    ".eslintrc.yaml",
+]
+
+ESLINTFILES = [
+    "./eslint/.eslintignore",
+    "./eslint/.eslintrc.js"
+]
