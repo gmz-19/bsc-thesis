@@ -1,8 +1,6 @@
 # Study Design
 
-###### BSc Thesis: "How Are Different Asynchronous Programming Constructs in JavaScript Related to Software Quality? A Repository Mining Study on GitHub"
-
-##### Research Design
+## Research Design
 This research conducts a mining software repository (MSR) study. The source of open-source repositories is GitHub, a network-based version management service for software development projects. The selected language for this study is JavaScript, as the title of this thesis suggests. The GitHub REST API is used to obtain the data from the JavaScript repositories.
 
 ## Research Questions
