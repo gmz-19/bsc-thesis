@@ -5,13 +5,21 @@ import time
 import datetime as dt
 from datetime import timedelta
 import re
+import calendar
 import constants
-from urllib3.util import Retry
-from requests.adapters import HTTPAdapter
-from git import Repo
 import pandas as pd
 import csv
-import subprocess
+
+from git import Repo
+from urllib3.util import Retry
+from requests.adapters import HTTPAdapter
+
+import numpy as np
+import scipy
+from scipy.stats import kruskal
+import matplotlib
+from matplotlib import pyplot
+import random
 
 
 class Sampling:
@@ -19,7 +27,7 @@ class Sampling:
     iterative and cannot be performed in one single step. More about this can be found in the paper."""
 
     def __init__(self):
-        """Set date here."""
+        """Set date here and change programming language (js/vue)."""
         self.language = "js"
         self.startDate = dt.date(2013, 1, 1)
         self.endDate = dt.date(2023, 1, 1)
@@ -30,8 +38,8 @@ class Sampling:
         pass
 
     def requestJsRepos(self):
-        """This is the first step of sampling. In this function, all javascript repos that match the characteristics are
-        stored in a file. More to the characteristics at the request url."""
+        """This is the first step of sampling. In this function, all javascript/vue repos that match the
+        characteristics are stored in a file. More to the characteristics at the request url. """
 
         usernames = [constants.USERNAME1, constants.USERNAME2, constants.USERNAME3]
         tokens = [constants.TOKEN1, constants.TOKEN2, constants.TOKEN6, constants.TOKEN7, constants.TOKEN8,
@@ -146,7 +154,7 @@ class Sampling:
         """
         if currRequestCount % timeOutRequestNumb == 0:
             self.counter = 0
-            time.sleep(10)
+            time.sleep(60)
             return True
 
     def requestLanguages(self, repoName, username, token):
@@ -192,7 +200,7 @@ class Sampling:
         }
 
     def addVueToJsRepos(self):
-        """Adds Vue repo list to JavaScript repo list."""
+        """Add Vue repo list to JavaScript repo list."""
 
         print("Adding Vue repos started.")
         vue_repos_list = fileClass.openFile("repos-data/VueRepos.txt")
@@ -216,7 +224,7 @@ class Sampling:
         print("Vue repos added.")
 
     def sortReposByStars(self):
-        """Sorts the repo list by stars and gives each repo an id."""
+        """Sorts repos list by stars and gives each repo an id."""
 
         print("Sorting started.")
         repos_list = fileClass.openFile("repos-data/JavaScriptRepos.txt")
@@ -244,7 +252,7 @@ class Sampling:
 
     def categorizeJsRepos(self):
         """This is the second step of sampling. In this function, all javascript repos are categorized in three
-        asynchronous constructs: callback, promise and async-await."""
+        asynchronous constructs: callback, promise and async/await."""
 
         print("Start categorizing.")
         usernames = [constants.USERNAME1, constants.USERNAME2, constants.USERNAME3]
@@ -262,7 +270,7 @@ class Sampling:
         async_repos = []
         uncategorized_repos = []
 
-        # Change file JavaScriptRepos or VueRepos
+        # Change file JavaScript repos or VueRepos
         repos_list = fileClass.openFile("repos-data/VueRepos.txt")
 
         for repo in repos_list["repositories"]:
@@ -375,7 +383,7 @@ class Sampling:
                 )
             elif (occur_percentage["async"] > occur_percentage["callback"]) & (
                     occur_percentage["async"] > occur_percentage["promise"]):
-                print("Categorized as async!")
+                print("Categorized as async/await!")
                 async_counter += 1
                 async_repos.append(
                     sampling.repoKey(
@@ -450,7 +458,7 @@ class Sampling:
         print("Categorized.")
 
     def deleteNoOccurrenceRepos(self):
-        """In this function, all repos without occurrence of asynchronous constructs are deleted."""
+        """In this function, all repos without occurrence of asynchronous keywords are deleted."""
 
         print("Delete Repos.")
         repos_to_keep = []
@@ -477,7 +485,7 @@ class Sampling:
 
     def reCategorizeUncategorized(self):
         """In this function, all uncategorized repos, which have more than 10 files of occurrences,
-        are re-categorized in three asynchronous constructs: callback, promise and async-await.
+        are re-categorized in three asynchronous constructs: callback, promise and async/await.
         Manually add to the Repos.txt."""
 
         print("Start Re-categorizing.")
@@ -491,7 +499,7 @@ class Sampling:
         for repo in repos_list["repositories"]:
             constructs = repo["async_constructs"]
             for keyword in constructs:
-                if constructs[f"{keyword}"] >= 1:
+                if constructs[f"{keyword}"] >= 10:
                     if keyword == "callback":
                         callback_repos.append(repo["index"])
                     elif keyword == "promise":
@@ -505,7 +513,8 @@ class Sampling:
         print("Re-categorized.")
 
     def checkRepoByCharacteristics(self, construct, firstRepoIndex, lastRepoIndex):
-        """The third step of sampling. The raw list from the requestRepos function is refined iteratively, sorted out and saved in a second file.
+        """The third step of sampling. The raw list from the requestRepos function is refined iteratively, sorted out
+        and saved in a second file.
 
         :param construct: The repo list with this asynchronous construct is examined.
         :param firstRepoIndex: From this index, the raw repo list is refined.
@@ -524,11 +533,11 @@ class Sampling:
         lost_repos_list = []
         repos_match_characteristics = []
         """
-        1 get issues
+        1. Get issues
         1.1 check if there are closed bug-issues and if so save them
         1.2 check if there are unlabeled closed issue and if so check if it is a bug and if so save them
 
-        2 get commits
+        2. Get commits
         2.1 check if there are more than 20 commits
         2.2 check if there are bug-commits and if so save them
         """
@@ -643,10 +652,8 @@ class Sampling:
     def getClosedIssues(self, repoName):
         """Iterates through all GitHub issues of a repository.
 
-        Args:
-            repoName (string): The complete name of a GitHub repository from which the issues are examined.
-        Returns:
-            list: json from the issues with all the important information for the study.
+        :param repoName: The complete name of a GitHub repository from which the issues are examined.
+        :return: Json list from the issues with all the important information for the study.
         """
         usernames = [constants.USERNAME1, constants.USERNAME2, constants.USERNAME3]
         tokens = [constants.TOKEN, constants.TOKEN6, constants.TOKEN8]
@@ -695,11 +702,11 @@ class Sampling:
                         # Closed pull requests will be listed here too, so skip them
                         if "pull_request" in issueKey:
                             continue
-                        # Skip issues written in chinese.
+                        # Skip issues written in chinese could not be excecuted,
+                        # because smileys or other characters, also be founded
                         """if not sampling.checkIfContainsChinese(issueKey["title"]) or sampling.checkIfContainsChinese(issueKey["body"]):
                             print("Chinese found in: ", repoName)
                             continue"""
-
                         total_issues += 1
                         label = ""
                         text = (
@@ -758,12 +765,10 @@ class Sampling:
         )
 
     def getBugCommits(self, repoName):
-        """This function requests all commits and checks if they address a bug and if so.
+        """This function requests all commits and checks if they address a bug and if so, they are saved.
 
-        Args:
-            repoName (string): The complete name of a GitHub repository from which the commits are examined.
-        Returns:
-            list: List of all commits with relevant information for the study.
+        :param repoName: The complete name of a GitHub repository from which the commits are examined.
+        :return: List of all commits with relevant information for the study.
         """
         sampling.setErrorToDefault()
         time_out = 0
@@ -985,10 +990,8 @@ class Sampling:
     def checkIfContainsChinese(self, string):
         """Checks if a text contains chinese.
 
-        Args:
-            string (string): The text which is to be examined.
-        Returns:
-            boolean: If the text contains chinese
+        :param string: The text which is to be examined.
+        :return: If the text contains chinese
         """
         count_symbols = 0
         # Problem here: Smileys are also reported as chinese
@@ -1006,10 +1009,8 @@ class Sampling:
     def checkIfBug(self, text):
         """This function checks if a text contains a bug.
 
-        Args:
-            text (string): The text which is to be examined after bug.
-        Returns:
-            boolean: If the text contains a bug.
+        :param text: The text which is to be examined after bug.
+        :return: If the text contains a bug.
         """
         bug_words = ["bug", "fix", "submit"]
 
@@ -1021,11 +1022,9 @@ class Sampling:
     def requestIssueComments(self, repoName, issueNumber):
         """Important information for the study is the time stamp of the last comment under the Issues. These are requested here.
 
-        Args:
-            repoName (string): The complete name of a GitHub repository from which the issues are examined.
-            issueNumber (integer): The unique issue id.
-        Returns:
-            lsit: List with date and number of comments
+        :param repoName: The complete name of a GitHub repository from which the issues are examined.
+        :param issueNumber: The unique issue id.
+        :return:
         """
         usernames = [constants.USERNAME1, constants.USERNAME2, constants.USERNAME3]
         tokens = [constants.TOKEN, constants.TOKEN6, constants.TOKEN8]
@@ -1042,7 +1041,8 @@ class Sampling:
         session.mount("http://", adapter)
         session.mount("https://", adapter)
 
-        # Since GitHub only returns the first 100 results per request, multiple requests must be made. Only when all comments have been retrieved, they will be returned.
+        # Since GitHub only returns the first 100 results per request, multiple requests must be made.
+        # Only when all comments have been retrieved, they will be returned.
         while True:
             self.counter += 1
             page += 1
@@ -1122,20 +1122,26 @@ class Sampling:
         }
 
     def newIndex(self, construct):
+        """Gives new index to repos after some are deleted through sampling.
+
+        :param construct: The construct for which this function should be executed.
+        :return: New repos list with new index.
+        """
         print("New Indexing started.")
-        repos_list = fileClass.openFile("repos-data/" + str(construct) + "Repos.txt")
+        repos_list = fileClass.openFile("repos-data/" + str(construct) + "ReposCharacteristics.txt")
         repos = repos_list["repositories"]
 
         sorted_repos = sorted(repos, key=lambda repo: repo["stars"], reverse=True)
 
         index = 1
-        time.sleep(15)
         for repo in sorted_repos:
+            print(repo["index"])
             repo["index"] = index
             index += 1
+            print(repo["index"])
 
         fileClass.writeToFile(
-            "repos-data/" + str(construct) + "Repos.txt",
+            "repos-data/" + str(construct) + "ReposCharacteristics.txt",
             sampling.repoJsons(
                 repos_list["construct"],
                 repos_list["total_count"],
@@ -1144,7 +1150,6 @@ class Sampling:
                 sorted_repos,
             ),
         )
-
         print("Finished.")
 
     def checkApiLimit(self, username, token):
@@ -1160,6 +1165,160 @@ class Sampling:
         print("Resets in:", test.headers.get("X-Ratelimit-Reset"))
 
         return test.headers.get("X-Ratelimit-Remaining")
+
+    def correctIndex(self, construct):
+        """When repos are deleted, there is a need to correct the unique ids.
+
+        :param construct: The construct for which indexes should be corrected.
+        :return: Corrected json of constructs.
+        """
+        repos = fileClass.openFile("repos-data/" + str(construct) + "ReposCharacteristics.txt")
+        print(type(repos))
+        count = 0
+
+        for repo in repos["repositories"]:
+            count += 1
+            repo["index"] = count
+        repos["total_count"] = count
+
+        fileClass.writeToFile(str("repos-data/" + construct) + "ReposCharacteristics.txt", repos)
+
+    def deleteElementFromJson(self, indexe, construct):
+        """When the manual inspection is done and repos are not wrongly selected as valid, they need to be deleted.
+
+        :param indexe: The number of the wrongly selected repo.
+        :param construct: TRhe construct for which the deletion is executed.
+        :return: New Json without these indexes.
+        """
+        repos = fileClass.openFile("repos-data/" + str(construct) + "ReposCharacteristics.txt")
+        delElements = 0
+
+        for index in indexe:
+            del repos["repositories"][index - 1 - delElements]
+            delElements += 1
+
+        count = 0
+        for repo in repos["repositories"]:
+            count += 1
+            repo["index"] = count
+
+        repos["total_count"] = count
+
+        fileClass.writeToFile("repos-data/" + str(construct) + "ReposCharacteristics.txt", repos)
+
+    def writeIssueDataFromJsonToCSV(self, construct):
+        """Reads the data from json and writes to csv format for further data analysis.
+
+        :param construct: The construct for which this function should be executed.
+        :return: Csv with new rows for columns issues and total_bug_issues.
+        """
+        repos = fileClass.openFile("repos-data/" + str(construct) + "ReposCharacteristics.txt")
+
+        for repo in repos["repositories"]:
+            print(f'Started with repo {repo["index"]}')
+            issueCount = repo["issues"]["total_bug_issues"]
+            # Add issue count to csv
+            commaSeparatedValues = CSV(construct, "ReposCharacteristics.csv")
+            commaSeparatedValues.changeValueInCSV(
+                repo["index"], "bug_issues_count", issueCount
+            )
+
+    def writeCommitsDataFromJsonToCSV(self, construct):
+        """Reads the data from the json and writes to the csv format for further data analysis.
+
+        :param construct: The construct for which this function should be executed.
+        :return: Csv with new rows for columns "commits", "total_bug_commits" and "bug-fix_commits_count".
+        """
+        """"""
+        repos = fileClass.openFile("repos-data/" + str(construct) + "ReposCharacteristics.txt")
+
+        for repo in repos["repositories"]:
+            print(f'Started with repo {repo["index"]}')
+            commaSeparatedValues = CSV(construct, "ReposCharacteristics.csv")
+            # Add bug-fix commit count
+            commaSeparatedValues.changeValueInCSV(
+                repo["index"],
+                "bug-fix_commits_count",
+                repo["commits"]["total_bug_commits"],
+            )
+
+            # Add commit count
+            commaSeparatedValues.changeValueInCSV(
+                repo["index"], "commits_count", repo["commits"]["total_commits"]
+            )
+
+            commaSeparatedValues = CSV(construct, "Metrics.csv")
+
+            if repo["commits"]["total_commits"] >= 30:
+                # Add bug-fix commit ratio
+                commaSeparatedValues.changeValueInCSV(
+                    repo["index"],
+                    "bug-fix-commits_ratio",
+                    repo["commits"]["total_bug_commits"]
+                    / repo["commits"]["total_commits"],
+                )
+            else:
+                commaSeparatedValues.changeValueInCSV(
+                    repo["index"], "bug-fix-commits_ratio", float("inf")
+                )
+
+    def checkLabelRatio(self, construct):
+        """Checks how many of the issues are labeled with bug.
+
+        :param construct: The construct for which this function should be executed.
+        :return: Unlabeled, labeled, total, total bug issues and percentage of labeled bug issues.
+        """
+        """"""
+        repoFile = fileClass.openFile(f"repos-data/{str(construct)}ReposCharacteristics.txt")
+        unlabeledIssues = 0
+        labeledIssues = 0
+        totalIssues = 0
+        totalBugIssues = 0
+
+        for repo in repoFile["repositories"]:
+            for issue in repo["issues"]["issues"]:
+                if issue["label"] == "bug":
+                    labeledIssues += 1
+                else:
+                    unlabeledIssues += 1
+            totalIssues += repo["issues"]["total_issues"]
+            totalBugIssues += repo["issues"]["total_bug_issues"]
+
+        print(
+            f"{construct}: unlabeledIssues= {unlabeledIssues}, labeledIssues= {labeledIssues}. Total issues= {totalIssues}, total bug issues= {totalBugIssues}.  {labeledIssues / totalBugIssues}% of bug issues are labeled."
+        )
+
+    def getStarsOfReposPerPL(self):
+        constructs = ["Callback", "Promise", "Async"]
+        arrayStarsCB = []
+        arrayStarsPR = []
+        arrayStarsAS = []
+        for construct in constructs:
+            countStars = 0
+            reposList = fileClass.openFile("repos-data/" + str(construct) + "ReposCharacteristics.txt")
+            repos = reposList["repositories"]
+            for repo in repos:
+                if construct == "Callback":
+                    arrayStarsCB.append(repo["stars"])
+                elif construct == "Promise":
+                    arrayStarsPR.append(repo["stars"])
+                elif construct == "Async":
+                    arrayStarsAS.append(repo["stars"])
+
+                countStars += repo["stars"]
+
+            print("Construct " + construct + " has stars in total: " + str(countStars))
+
+        print(f"CB has stars median of: {np.median(arrayStarsCB)}")
+        print(f"PR has stars median of: {np.median(arrayStarsPR)}")
+        print(f"AS has stars median of: {np.median(arrayStarsAS)}")
+
+        printDiagrams.boxplot(
+            [arrayStarsCB, arrayStarsPR, arrayStarsAS],
+            "stars",
+            [1, 2, 3],
+            ["Callback", "Promise", "Async"],
+        )
 
 
 class File:
@@ -1186,7 +1345,7 @@ class File:
 
         :param fileName: (string): Complete filename with programming language.
         :param repoJson: (list): The json object to written in the txt file.
-        :return:
+        :return: list: Json of the txt file.
         """
         with open(fileName, "w", encoding="utf-8") as file:
             json.dump(repoJson, file, ensure_ascii=False, indent=5)
@@ -1240,9 +1399,8 @@ class CSV:
 
     def __init__(self, construct, fileSuffix):
         """
-
         :param construct: The asynchronous construct for which the functions from this class should be executed.
-        :param fileSuffix:
+        :param fileSuffix: "ReposCharacteristics.csv" or "Metrics.csv"
         """
         self.curConstruct = construct
         self.fileSuffix = fileSuffix
@@ -1255,11 +1413,12 @@ class CSV:
             commaSeparatedValues.initCSV()
 
     def changeValueInCSV(self, rowIndex, columnName, value):
-        """
-        Args:
-            rowIndex (integer): Index of csv row.
-            columnName (integer): Number of csv column.
-            value (integer or string): Value to be changed in csv.
+        """Changes value in csv file.
+
+        :param rowIndex: Index of csv row.
+        :param columnName: Number of csv column.
+        :param value: Value to be changed in csv.
+        :return: New csv with updated values.
         """
         df = pd.read_csv(str(self.curConstruct) + self.fileSuffix)
 
@@ -1274,8 +1433,8 @@ class CSV:
 
             writer.writerow(
                 self.getHEADER(
-                    "CalculatedVals.csv"
-                    if self.fileSuffix.endswith("CalculatedVals.csv")
+                    "ReposCharacteristics.csv"
+                    if self.fileSuffix.endswith("ReposCharacteristics.csv")
                     else self.fileSuffix
                 )
             )
@@ -1285,60 +1444,43 @@ class CSV:
         switch = {
             "ReposCharacteristics.csv": constants.REPOSCHARACTERISTICS,
             "Metrics.csv": constants.METRICS,
-            "CalculatedVals.csv": constants.CALCULATEDVALS,
         }
         return switch.get(type, "No such column in csv")
 
-    def getCSVRowIndexMetricFramework(self, calculatedValueType):
-        switch = {
-            "count": 1,
-            "mean": 2,
-            "std": 3,
-            "min": 4,
-            "25%": 5,
-            "50%": 6,
-            "75%": 7,
-            "max": 8,
-        }
-        return switch.get(calculatedValueType, "No such column in csv")
-
     def getCSVColumnIndexData(self, columnName):
         switch = {
-            "ncloc": 2,
-            "code_smells": 3,
-            "any-type_count": 4,
-            "cognitive_complexity": 5 if self.curConstruct == "TypeScript" else 4,
-            "framework": 6 if self.curConstruct == "TypeScript" else 5,
-            "bug_issues_count": 7 if self.curConstruct == "TypeScript" else 6,
-            "bug-fix_commits_count": 8 if self.curConstruct == "TypeScript" else 7,
-            "commits_count": 9 if self.curConstruct == "TypeScript" else 8,
+            "bug_issues_count": 2,
+            "bug-fix_commits_count": 3,
+            "commits_count": 4,
+            "code_smells": 5,
+            "cognitive_complexity": 6,
+            "ncloc": 7,
         }
         return switch.get(columnName, "No such column in csv")
 
     def getCSVColumnIndexMetric(self, columnName):
         switch = {
-            "code-smells_ncloc": 2,
+            "avg_bug-issue_time": 2,
             "bug-fix-commits_ratio": 3,
-            "avg_bug-issue_time": 4,
+            "code-smells_ncloc": 4,
             "cognitive-complexity_ncloc": 5,
-            "any-type-count_ncloc": 6,
         }
         return switch.get(columnName, "No such column in csv")
 
     def initCSV(self):
         """Adds values (index and repo name) from json to csv."""
-        repoFile = fileClass.openFile(self.curConstruct + "ReposCharacteristics.txt")
-        print("Add repos from json to csv without values")
-        for repo in repoFile["repositories"]:
+        repo_file = fileClass.openFile(f"repos-data/{self.curConstruct}ReposCharacteristics.txt")
+        print("Add repos from json to csv without values.")
+        for repo in repo_file["repositories"]:
             commaSeparatedValues.writeInitToCSV(repo["index"], repo["repoFullName"])
-        print("All repos added to csv")
+        print("All repos added to csv.")
 
     def writeInitToCSV(self, index, repoName):
         """Writes index and repo name to csv.
 
-        Args:
-            index (integer): Id from repo.
-            repoName (string): Full repo name.
+        :param index: Id from repo.
+        :param repoName: Full repo name.
+        :return: New csv with none values.
         """
         with open(str(self.curConstruct) + self.fileSuffix, "a+", newline="") as f:
             writer = csv.writer(f)
@@ -1348,9 +1490,8 @@ class CSV:
     def addColumnWithDefaultText(self, columnName, defaultText):
         """Add new column with default text. Needs to be added at getCSVColumnIndexData().
 
-        Args:
-            columnName (string): Name of the new column.
-            defaultText (string): Default text.
+        :param columnName: Name of the new column.
+        :param defaultText: Default text.
         """
         df = pd.read_csv(str(self.curConstruct) + self.fileSuffix)
         print(f"Create column: {columnName} with default text: {defaultText}")
@@ -1363,8 +1504,7 @@ class CSV:
 
     def deleteRowAndCorrectIndex(self, index):
         """
-        Args:
-            index (integer): Index of repo and not of csv.
+        :param index: Index of repo and not of csv.
         """
         print(f"delete index: {index}")
         df = pd.read_csv(str(self.curConstruct) + self.fileSuffix)
@@ -1377,12 +1517,9 @@ class CSV:
 
     def getCSVcolumnValues(self, columnIndex, fileName):
         """
-        Args:
-            columnIndex (integer): Index of repo and not of csv.
-            fileName (string): Complete filename with pl.
-
-        Returns:
-            integer: Value of csv.
+        :param columnIndex: Index of repo and not of csv.
+        :param fileName: Complete filename with pl.
+        :return: Value of csv.
         """
         df = pd.read_csv(fileName)
 
@@ -1394,8 +1531,7 @@ class CSV:
 
     def deleteColumn(self, columnName):
         """
-        Args:
-            columnName (string): Name of the column to be deleted.
+        :param columnName:  Name of the column to be deleted.
         """
         df = pd.read_csv(str(self.curConstruct) + self.fileSuffix)
 
@@ -1404,14 +1540,11 @@ class CSV:
         df.to_csv(str(self.curConstruct) + self.fileSuffix, index=False)
 
     def sumColumn(self, columnName, fileName):
-        """Summs up all values of a column that are not inf value.
+        """Sums up all values of a column that are not inf value.
 
-        Args:
-            columnName (string): Name of the column.
-            fileName (string): Complete filename with pl.
-
-        Returns:
-            integer: Sum of all values that are not inf from the column.
+        :param columnName: Name of the column.
+        :param fileName: Complete filename with pl.
+        :return: Sum of all values that are not inf from the column.
         """
         df = pd.read_csv(fileName)
 
@@ -1425,162 +1558,563 @@ class CSV:
         return sum
 
     def describeColumn(self, columnName, fileName):
-        """Calulates values (count, mean, std, min, 25%, 50%, 75%, max) of a column.
+        """Calculates values (count, mean, std, min, 25%, 50%, 75%, max) of a column.
 
-        Args:
-            columnName (string): Name of the column.
-            fileName (string): Complete filename with pl.
+        :param columnName: Name of the column.
+        :param fileName: Complete filename with pl.
         """
         df = pd.read_csv(fileName)
         print(df.loc[(df[columnName] < float("inf"))][columnName].describe())
 
 
-class ESLint:
-    """To check if repo is categorized correctly, ESLint needs to be installed and executed for each JavaScript repo."""
+class SonarQubeDance:
+    """This class handles the SonarQube analysis. All data from code smells to cognitive complexity to LoC
+    are genereted via the following functions."""
 
     def __init__(self, construct):
         """
         :param construct: The asynchronous construct for which the functions from this class should be executed.
         """
         self.curConstruct = construct
+        self.repoFullName = "elastic-kibana"
+        pass
+
+    def createAndAnalyzeRepos(self, startIndex, endIndex):
+        """From here the analysis is created and started. At the end the metrics are saved in csv.
+        Steps are made:
+            1: Cloned repos
+            2: Generated tokens for analysis
+            3: Executed analysis
+            4: Output code smells and cognitive complexity
+        :param startIndex: The index of the repository of the refined list at which the analysis is to be started.
+        :param endIndex: The index of the repository of the refined list at which the analysis is to be ended.
+        """
+        repos = fileClass.openFile(f'repos-data/{str(self.curConstruct)}ReposCharacteristics.txt')
+
+        for repo in repos["repositories"]:
+            if repo["index"] < startIndex or endIndex < repo["index"]:
+                continue
+            self.repoFullName = repo["repoFullName"].replace("/", "-")
+            print(self.repoFullName)
+
+            sonarQubeDance.executeAnalysis(sonarQubeDance.generateToken())
+            print(os.getcwd())
+            os.chdir("../../../")
+            commaSeparatedValues.changeValueInCSV(
+                repo["index"], "code_smells", sonarQubeDance.getCodeSmellsIssues()
+            )
+            commaSeparatedValues.changeValueInCSV(
+                repo["index"],
+                "cognitive_complexity",
+                sonarQubeDance.getCogComplexityOrNcloc("cognitive_complexity"),
+            )
+            commaSeparatedValues.changeValueInCSV(
+                repo["index"], "ncloc", sonarQubeDance.getCogComplexityOrNcloc("ncloc")
+            )
+            print(f'Repo {self.repoFullName}: {repo["index"]} analyzed.')
+
+    def generateToken(self):
+        """The token for the repository will be automatically created here.
+
+        :return: The string of the token.
+        """
+        query_token = {"name": self.repoFullName}
+        token_request = requests.post(
+            constants.URLGENERATETOKEN, params=query_token, auth=(constants.TOKEN10, "")
+        )
+        print(token_request.status_code)
+        print(token_request.json())
+        return token_request.json()["token"]
+
+    def executeAnalysis(self, token):
+        """The analysis of the repo is executed in the root folder.
+
+        :param token: The token created for the repository.
+        """
+        if self.curConstruct == "Async":
+            os.chdir("./git-repos/async/" + str(self.repoFullName))
+        elif self.curConstruct == "Callback":
+            os.chdir("./git-repos/callback/" + str(self.repoFullName))
+        elif self.curConstruct == "Promise":
+            os.chdir("./git-repos/promise/" + str(self.repoFullName))
+        else:
+            os.chdir("./git-repos/test/" + str(self.repoFullName))
+
+        os.system(
+            f'sonar-scanner.bat -D"sonar.projectKey={self.repoFullName}" -D"sonar.host.url=http://localhost:9000" -D"sonar.login={token}"'
+        )
+
+    def getCodeSmellsIssues(self):
+        """Requests the issues found from SonarQube. Code smells are only counted if there are related to js.
+
+        :return: The number of code smells.
+        """
+        # In large projects SonarQube need some time to process the analysis. Update value here.
+        time.sleep(180)
+        query = {
+            "componentKeys": f"{self.repoFullName}",
+            "languages": "js",
+            "types": "CODE_SMELL",
+        }
+        req = requests.get(
+            constants.URLISSUES, params=query, auth=(constants.TOKEN10, "")
+        )
+
+        jsonRequest = req.json()
+        print(jsonRequest)
+        print("Code smell count: " + str(jsonRequest["total"]))
+        return int(jsonRequest["total"])
+
+    def getCogComplexityOrNcloc(self, metric):
+        """Function to get the number of cognitive complexity or LoC. Only counted if related to .js files.
+
+        :param metric: The desired metric (ncloc or cognitive_complexity).
+        :return: The number of the collected metric.
+        """
+        pageNumber = 0
+        metricCount = 0
+        while True:
+            pageNumber += 1
+            query = {
+                "component": f"{self.repoFullName}",
+                "metricKeys": metric,
+                "ps": 500,
+                "p": pageNumber,
+            }
+
+            req = requests.get(
+                constants.URLCOMPONENTREE, params=query, auth=(constants.TOKEN10, "")
+            )
+
+            jsonRequestComponents = req.json()["components"]
+            if not jsonRequestComponents == []:
+                for file in jsonRequestComponents:
+                    try:
+                        # Only when number is related to file. Not when to folder.
+                        if file["qualifier"] == "FIL" and (
+                                (
+                                        file["language"]
+                                        == ("js")
+                                )
+                                or (
+                                        file["path"].endswith(".vue")
+                                        and file["language"] == "js"
+                                )
+                        ):
+                            try:
+                                metricCount += int(file["measures"][0]["value"])
+                            except:
+                                print("No value measured")
+                    except:
+                        print("File with no language attribute, e.g. xml")
+            else:
+                print(metric + " count: " + str(metricCount))
+                return metricCount
+
+    def metricSearch(self):
+        """Prints all metrics from SonarQube."""
+        url = "http://localhost:9000/api/metrics/search"
+        query = {"ps": 500}
+        req = requests.get(url, params=query, auth=(constants.TOKEN10, ""))
+        print(req.json())
+
+
+class LocalCategorization:
+    """To check if repo is categorized correctly, the functions of this class are needed
+    and execute for each JavaScript repo. """
+
+    def __init__(self, construct):
+        """
+        :param construct: The construct for which the functions from this class should be executed.
+        """
+        self.curConstruct = construct
         self.repoFullName = ""
         pass
 
-    def createEslintReport(self, startIndex, endIndex):
-        """Function for the whole ESLint process.
-        Steps:
-            1. delete existing ESLint files,
-            2. rename existing package.json,
-            3. copy default ESLint config into project root,
-            4. delete new created package.json config and rename old one,
-            5. install and run ESLint,
-            6. read report and save value in csv.
+    def reCategorizeLocal(self, startIndex, endIndex):
+        """Categorizes repos by keyword occurrence in .js files.
 
-        Args:
-            startIndex (integer): The index of the repository of the refined list at which the analysis is to be started.
-            endIndex (integer): The index of the repository of the refined list at which the analysis is to be ended.
+        :param startIndex: The index of the repository of the refined list at which the categorization is to be started.
+        :param endIndex: The index of the repository of the refined list at which the categorization is to be ended.
+        :return: Json files with new categeorized repos.
         """
-        file = fileClass.openFile(self.curLanguage + "ReposCharacteristics.txt")
-        for repo in file["repositories"]:
-            if startIndex > repo["index"] or endIndex < repo["index"]:
+        callback_counter = 0
+        async_counter = 0
+        promise_counter = 0
+        no_categ_counter = 0
+
+        callback_repos = []
+        async_repos = []
+        promise_repos = []
+        no_categ_repos = []
+
+        repos_list = fileClass.openFile(f"repos-data/{self.curConstruct}ReposCharacteristics.txt")
+
+        for repo in repos_list["repositories"]:
+            async_occur = 0
+            await_occur = 0
+            promise_occur = 0
+            pr_occur = 0
+            callback_occur = 0
+            cb_occur = 0
+            fn_occur = 0
+
+            if repo["index"] < startIndex or endIndex < repo["index"]:
                 continue
             self.repoFullName = repo["repoFullName"].replace("/", "-")
+            print(f"Start categorizing with repo {repo['index']}: ", self.repoFullName)
+            root_folder = f"./git-repos/{self.curConstruct.lower()}/{self.repoFullName}/"
 
-            eslint.deleteExistingEslint(eslint.findAllEslintFilesInDir())
-            packageJson.renamePackageJson(self.repoFullName)
-            eslint.copyLintConfigInDir()
-            eslint.runEslint()
-            anyCount = eslint.readReport()
-            print("Any-count: " + str(anyCount))
-            packageJson.deletePackageJson(self.repoFullName)
-            commaSeparatedValues.changeValueInCSV(
-                repo["index"], "any-type_count", anyCount
-            )
-
-    def findAllEslintFilesInDir(self):
-        """Get paths of existing ESLint files.
-
-        Returns:
-            list: List of all existing ESLint paths.
-        """
-        print("find all eslints")
-        filesDir = []
-
-        for path in constants.ESLINTPATHS:
-            for root, dirs, files in os.walk("./git-repos/TS/" + self.repoFullName):
+            # Iterates all .js files of a repository and check for occurrences
+            for root, dirs, files in os.walk(root_folder):
                 for file in files:
-                    if file.endswith(path):
-                        filesDir.append(os.path.join(root, file))
-        print(filesDir)
-        return filesDir
+                    if file.endswith(".js"):
+                        file_path = os.path.join(root, file)
+                        with open(file_path, "r", encoding="utf-8") as file:
+                            content = file.read()
+                            async_occur += content.count("async")
+                            await_occur += content.count("await")
+                            promise_occur += content.count("promise")
+                            pr_occur += content.count("Promise")
+                            callback_occur += content.count("callback")
+                            cb_occur += content.count("cb")
+                            fn_occur += content.count("fn")
 
-    def deleteExistingEslint(self, dirs):
-        """Delete all paths of ESLint files.
+            print(
+                "Async Count: " + str(async_occur) + str(await_occur) + "\nPromise Count: " + str(promise_occur) + str(
+                    pr_occur) + "\nCallback Count: " + str(callback_occur) + " + " + str(cb_occur) + " + " + str(
+                    fn_occur))
 
-        Args:
-            dirs (list): Paths that will be deleted.
-        """
-        print("delete existing eslint config")
-        for dir in dirs:
-            print(dir)
-            os.remove(dir)
-        print("deletion finished")
+            callback_full_count = callback_occur + cb_occur + fn_occur
+            async_full_occur = async_occur + await_occur
+            promise_full_count = promise_occur + pr_occur
 
-    def copyLintConfigInDir(self):
-        """Copy default ESLint config file into root of repo."""
-        print("copy new eslint config")
-        for file in constants.ESLINTFILES:
-            shutil.copy(
-                file,
-                "./git-repos/JS/"
-                if self.curLanguage == "JavaScript"
-                else "./git-repos/TS/" + f"{self.repoFullName}/.eslintignore",
-            )
-            shutil.copy(
-                file,
-                "./git-repos/JS/"
-                if self.curLanguage == "JavaScript"
-                else "./git-repos/TS/" + f"{self.repoFullName}/.eslintrc.js",
-            )
-        print("copy finished")
-
-    def runEslint(self):
-        """Installs the typescript eslint plugin and runs the analysis. If it is a react project the .tsx extension is analysed too. Saves the report in folder."""
-        os.chdir(
-            "./git-repos/JS/"
-            if self.curLanguage == "JavaScript"
-            else "./git-repos/TS/" + f"{self.repoFullName}"
-        )
-        print("install")
-        try:
-            subprocess.check_call(
-                "npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin --force",
-                shell=True,
-            )
-        except subprocess.CalledProcessError as e:
-            print("error on installation")
-        print("install finished")
-        try:
-            print(os.getcwd())
-            subprocess.check_call(
-                f'npx eslint . --ext .ts,.tsx -o "../../../eslint/eslintReports/eslint_output_{self.repoFullName}.txt"',
-                shell=True,
-            )
-        except subprocess.CalledProcessError as e:
-            if str(e).endswith("1."):
-                print("Eslint report created")
+            # Calculates the number of occurrences of each asynchronous construct
+            if (callback_full_count > async_full_occur) & (callback_full_count > promise_full_count):
+                print("As callback categorized.")
+                callback_counter += 1
+                callback_repos.append(repo)
+            elif (async_full_occur > callback_full_count) & (async_full_occur > promise_full_count):
+                print("As async categorized.")
+                async_counter += 1
+                async_repos.append(repo)
+            elif (promise_full_count > callback_full_count) & (promise_full_count > async_full_occur):
+                print("As promise categorized.")
+                promise_counter += 1
+                promise_repos.append(repo)
             else:
-                try:
-                    print(os.getcwd())
-                    subprocess.check_call(
-                        f'npx eslint . --ext .ts -o "../../../eslint/eslintReports/eslint_output_{self.repoFullName}.txt"',
-                        shell=True,
-                    )
-                except subprocess.CalledProcessError as e:
-                    print("Eslint report created") if str(e).endswith("1.") else print(
-                        "Can't create eslint report!"
-                    )
+                print("Could not categorize.")
+                no_categ_counter += 1
+                no_categ_repos.append(repo)
 
-    def readReport(self):
-        """Reads the saved eslint report and investigates how often the any type was used.
+            print("Write into Files ... ")
+            fileClass.writeToFile(
+                "CallbackReposCharac_new.txt",
+                sampling.repoJsons(
+                    repos_list["construct"],
+                    callback_counter,
+                    repos_list["incomplete_results"],
+                    repos_list["status_code"],
+                    callback_repos,
+                ),
+            )
+            fileClass.writeToFile(
+                "PromiseReposCharac_new.txt",
+                sampling.repoJsons(
+                    repos_list["construct"],
+                    promise_counter,
+                    repos_list["incomplete_results"],
+                    repos_list["status_code"],
+                    promise_repos,
+                ),
+            )
+            fileClass.writeToFile(
+                "AsyncReposCharac_new.txt",
+                sampling.repoJsons(
+                    repos_list["construct"],
+                    async_counter,
+                    repos_list["incomplete_results"],
+                    repos_list["status_code"],
+                    async_repos,
+                ),
+            )
+            fileClass.writeToFile(
+                "UncategorizedReposCharac_new.txt",
+                sampling.repoJsons(
+                    None,
+                    no_categ_counter,
+                    repos_list["incomplete_results"],
+                    repos_list["status_code"],
+                    no_categ_repos,
+                ),
+            )
 
-        Returns:
-            string: The number of used any types.
+
+class Metrics:
+    """All functions related to metrics are in this class implemented."""
+
+    def __init__(self, construct):
         """
-        try:
-            with open(
-                    f"./../../../eslint/eslintReports/eslint_output_{self.repoFullName}.txt"
-            ) as f:
-                contents = f.readlines()
-                os.chdir(f"./../../../")
-                return str(contents).count("Unexpected any. Specify a different type")
-        except FileNotFoundError:
-            os.chdir(f"./../../../")
-            print("error on read file")
-            return 0
+        :param construct: The asynchronous construct for which the functions from this class should be executed.
+        """
+        self.curConstruct = construct
+        pass
+
+    def calculateMetricPerLoc(self, metric):
+        """Calculetes metric for repos.
+
+        :param metric: Can be 'code_smells' or 'cognitive_complexity'
+        """
+        metricList = commaSeparatedValues.getCSVcolumnValues(
+            commaSeparatedValues.getCSVColumnIndexData(metric),
+            f"{self.curConstruct}ReposCharacteristics.csv",
+        )
+
+        ncloc = commaSeparatedValues.getCSVcolumnValues(
+            commaSeparatedValues.getCSVColumnIndexData("ncloc"),
+            f"{self.curConstruct}ReposCharacteristics.csv",
+        )
+
+        for i in range(0, len(metricList)):
+            print(metricList[i] / ncloc[i])
+            csvColumn = f'{metric.replace("_", "-")}_ncloc'
+            commaSeparatedValues.changeValueInCSV(
+                i + 1, csvColumn, metricList[i] / ncloc[i]
+            )
+
+    def calculateAvgBugResulutionTime(self):
+        """Calculates the average time a bug issue was open.
+        Time from opening the issue to the last comment under the issue in seconds."""
+        repos = fileClass.openFile(f"repos-data/{self.curConstruct}ReposCharacteristics.txt")
+
+        for repo in repos["repositories"]:
+            secsOpen = 0
+            countIssues = 0
+
+            print("Calculate avg time")
+            for issue in repo["issues"]["issues"]:
+                lastComment = issue["lastComment"]
+
+                # If there is no comment under the issue use the time until the issue was closed
+                if lastComment == "":
+                    lastComment = issue["closedAt"]
+
+                issueCreated = time.strptime(issue["createdAt"], "%Y-%m-%dT%H:%M:%SZ")
+                issueLastComment = time.strptime(lastComment, "%Y-%m-%dT%H:%M:%SZ")
+
+                issueCreated = calendar.timegm(issueCreated)
+                issueLastComment = calendar.timegm(issueLastComment)
+
+                # Time difference in seconds
+                timedif = issueLastComment - issueCreated
+
+                if timedif <= 120 or timedif >= 31536000:
+                    print(f"time issue is open: {timedif}")
+                    continue
+                secsOpen += timedif
+                countIssues += 1
+
+            if countIssues < 5:
+                print(
+                    f"Less than 5 issues (bug issues can be more than 5 but the issues that are not longer than 2 mins or more than 365 days open are subtracted): {countIssues}"
+                )
+                commaSeparatedValues.changeValueInCSV(
+                    repo["index"], "avg_bug-issue_time", float("inf")
+                )
+                continue
+
+            print(f"secs open: {secsOpen / countIssues}")
+            # If there are more than 5 bug issues add the avg time to close the issue
+            # (to last comment under issue) to csv
+            commaSeparatedValues.changeValueInCSV(
+                repo["index"], "avg_bug-issue_time", secsOpen / countIssues
+            )
+
+    def getMetricWithoutInf(self, metric):
+        """ategorized by asynchronous construct.
+
+        :param metric: avg_bug-issue_time, code-smells_ncloc, cognitive-complexity_ncloc, or bug-fix-commits_ratio
+        :return: List of callback, promise and async values.
+        """
+        files = ["Async", "Callback", "Promise"]
+        val_as_cb_pr = []
+        for file in files:
+            dfMerged = self.mergeCharMetricDF(file)
+            val_as_cb_pr.append(dfMerged.loc[dfMerged[metric] < float("inf")][metric])
+            print(dfMerged.loc[dfMerged[metric] < float("inf")][metric].describe())
+        print(val_as_cb_pr)
+        return val_as_cb_pr
+
+    def mergeCharMetricDF(self, construct):
+        """Merges two data frames to one.
+
+        :param construct: The construct of the dataframe to be merged.
+        :return: The merged data frame.
+        """
+        dfChar = pd.read_csv(f"{construct}ReposCharacteristics.csv")
+        dfMetric = pd.read_csv(f"{construct}Metrics.csv")
+
+        return pd.merge(dfChar, dfMetric, on="index", how="outer")
 
 
-# Initialize Sampling object
+class Test:
+    """Functions related to tests for the statistical analysis."""
+
+    def __init__(self):
+        pass
+
+    def normalityTest(self, values):
+        """Executes normality test.
+
+        :param values: List of values.
+        :return: Sample gaussian or not.
+        """
+        stat_val, p_val = scipy.stats.shapiro(values)
+
+        if p_val < 0.05:
+            print("Values comes not from a normal distribution. Sample does not look Gaussian")
+        else:
+            print("Values comes from a normal distribution. Sample looks Gaussian")
+
+    def testHypothesis(self, values, alpha):
+        """Hypothesis test with Kruskal-Wallis.
+
+        :param values: List of three lists, each containing the values for a group from asynchronous constructs.
+        :param alpha: Significance level, default is 0.05.
+        :return: Rejection of null hypothesis and effect size when null hypothesis is rejected.
+        """
+
+        h_val, p_val = kruskal(values[0], values[1], values[2])
+
+        print(f"Kruskal-Wallis --> H-value: {h_val}, p-value: {p_val}")
+
+        # Check normality for each group and metric
+        if p_val < alpha:
+            print("Reject null hypothesis (all groups have equal medians).")
+
+            # Calculate effect size using eta-squared formula
+            if h_val != 0:
+                # Sample size of each group
+                n1, n2, n3 = len(values[0]), len(values[1]), len(values[2])
+                n_sum = n1 + n2 + n3
+
+                eta_sq = h_val / (n_sum - 1)
+                print(f"Effect size: {eta_sq}")
+                if eta_sq < 0.01:
+                    return print(f"Effect size is small.")
+                elif eta_sq < 0.06:
+                    return print(f"Effect size is medium.")
+                else:
+                    return print(f"Effect size is large.")
+        else:
+            print("Failed to reject null hypothesis (all groups have equal medians).")
+            print("No significant difference between groups.")
+
+    def getMetricAndVals(self, metric, construct):
+        """Get values for tests and plots.
+
+        :param metric: avg_bug-issue_time, code-smells_ncloc, cognitive-complexity_ncloc, or bug-fix-commits_ratio.
+        :param construct: The construct for which the values should be returned.
+        :return: List of callback, promise and async/await values.
+        """
+        vals = []
+        dfChar = pd.read_csv(f"{construct}ReposCharacteristics.csv")
+        dfMetric = pd.read_csv(f"{construct}Metrics.csv")
+        dfMerged = pd.merge(dfChar, dfMetric, on="index", how="outer")
+        vals.append(dfMerged.loc[dfMerged[metric] < float("inf")][metric])
+        return vals
+
+    def getRandomCommits(self, numberRandomComits):
+        """Selects random commits from json.
+
+        :param numberRandomComits: Number of printed commits.
+        """
+        languages = ["TypeScript", "JavaScript"]
+        commitlist = []
+        for lang in languages:
+            repos = fileClass.openFile(f"{lang}ReposCharacteristics.txt")
+
+            for repo in repos["repositories"]:
+                for commit in repo["commits"]["bug_commits"]:
+                    commitlist.append(commit["message"])
+
+        listRandomCommits = random.sample(commitlist, numberRandomComits)
+        counter = 0
+        for commitsAS in listRandomCommits:
+            counter += 1
+            print(f"Commit nr. {counter}")
+            print(commitsAS)
+
+
+class PrintDiagramms:
+    """Print diagrams for statistical analysis"""
+
+    def __init__(self):
+        pass
+
+    def histogramm(self, metric, minValue, maxValue, steps, width, vals):
+        """Print histogramm.
+
+        :param metric: avg_bug-issue_time, code-smells_ncloc, cognitive-complexity_ncloc, or bug-fix-commits_ratio.
+        :param minValue: Minimum value.
+        :param maxValue: Maximum value.
+        :param steps: Steps.
+        :param width: Width.
+        :param vals: List of js and ts vals.
+        """
+        # First val is async, second is callback, third is promise
+        for val in vals:
+            pyplot.hist(val, bins=np.arange(min(val), max(val) + width, width))
+            pyplot.xlabel(metric)
+            pyplot.axis([minValue, maxValue, 0, steps])
+            pyplot.grid(True)
+            pyplot.show()
+
+    def boxplot(self, vals, metric, countDataSet, xTicks):
+        """Print box plot.
+
+        :param vals: List of values from all asynchronous constructs.
+        :param metric: Subtitle.
+        :param countDataSet: List of numbers of box plots (For example: [1, 2, 3, ...]).
+        :param xTicks: List of labels of box plots (For example: ['Async', 'Callback', 'Promise'])
+        :return:
+        """
+
+        # Backend of matplotlib should be changed, because IntelliJ have problems with that ...
+        matplotlib.use('tkagg', force=True)
+
+        pyplot.figure(figsize=(9, 6))
+        pyplot.subplots_adjust(left=0.04, right=0.99, bottom=0.05, top=0.92)
+        pyplot.boxplot(vals)
+        pyplot.suptitle(metric, fontsize=12, fontweight="bold")
+        pyplot.xticks(countDataSet, xTicks, fontsize=11)
+        pyplot.yticks(fontsize=11)
+        pyplot.yticks.labelsize = 20
+        pyplot.grid(True)
+        pyplot.show()
+
+    def dumpCSV(self):
+        file_names = ['AsyncMetrics.csv', 'CallbackMetrics.csv', 'PromiseMetrics.csv']
+        data_frames = []
+
+        for file_name in file_names:
+            df = pd.read_csv(file_name)
+            data_frames.append(df)
+        return data_frames
+
+    def getMean(self, metric, vals):
+        """Gets mean of csv column.
+
+        :param metric: avg_bug-issue_time, code-smells_ncloc, cognitive-complexity_ncloc, or bug-fix-commits_ratio.
+        :param vals: List of values from all asynchronous constructs.
+        :return:
+        """
+        print(f"Async {metric} mean: {np.mean(vals[0])}")
+        print(f"Callback {metric} mean: {np.mean(vals[1])}")
+        print(f"Promise {metric} mean: {np.mean(vals[2])}")
+
+
+# SAMPLING
 fileClass = File()
 sampling = Sampling()
 
@@ -1589,30 +2123,62 @@ sampling = Sampling()
 # sampling.addVueToJsRepos()
 # sampling.sortReposByStars()
 
-# 2nd step of Sampling: Categorize repos in async constructs
+# 2nd step of Sampling: Categorize repos in async constructs with GitHub API
 # sampling.deleteNoOccurrenceRepos()
 # sampling.categorizeJsRepos()
 # sampling.reCategorizeUncategorized()
-# sampling.newIndex("Async")
 # sampling.newIndex("Callback")
-# sampling.newIndex("Promise")
 
-# 3rd step of Sampling: Filter bug issues and commits
+# 1st & 2nd criterion of 2nd step: Filter bug issues and commits
 # sampling.checkRepoByCharacteristics("Async", 1, 975)
 # sampling.checkRepoByCharacteristics("Callback", 1, 1164)
 # sampling.checkRepoByCharacteristics("Promise", 1, 980)
 
-# Cloning Repos from GitHub
+# 3rd step of Sampling: Cloning repos & check categorization
 # cloning = CloneRepo("Async")
 # cloning = CloneRepo("Callback")
 # cloning = CloneRepo("Promise")
 # cloning.cloneRepoFromList()
+# localCategorization = LocalCategorization("Callback")
+# localCategorization.reCategorizeLocal(1, 208)
 
-# Check categorization of cloned repos
-eslint = ESLint("TypeScript")
-commaSeparatedValues = CSV("Metrics.csv")
+# sampling.writeIssueDataFromJsonToCSV("callback")
+# sampling.writeCommitsDataFromJsonToCSV("callback")
+# sampling.checkLabelRatio("Callback")
+# sampling.getStarsOfReposPerPL()
 
-# CHECKING
-# sampling.checkApiLimit(constants.USERNAME1, constants.TOKEN1)
-# sampling.checkApiLimit(constants.USERNAME2, constants.TOKEN6)
-# sampling.checkApiLimit(constants.USERNAME3, constants.TOKEN8)
+
+# DATA COLLECTION
+sonarQubeDance = SonarQubeDance("Callback")
+# sonarQubeDance.createAndAnalyzeRepos(1, 208)
+
+# 1st: Calculate Metrics for RQ1.1 (functional correctness)
+# Suffix could be: ReposCharacteristics.csv or Metrics.csv
+commaSeparatedValues = CSV("Callback", "ReposCharacteristics.csv")
+# commaSeparatedValues.createAndInitCSV()
+metrics = Metrics("Callback")
+# sampling.writeIssueDataFromJsonToCSV("Callback")
+# sampling.writeCommitsDataFromJsonToCSV("Callback")
+# metrics.calculateAvgBugResulutionTime()
+
+# 2nd: Calculate Metrics for RQ1.2 (maintainability: 'code_smells' or 'cognitive_complexity')
+# metrics.calculateMetricPerLoc("code_smells")
+
+
+# ANALYSIS
+# Metrics could be: avg_bug-issue_time, bug-fix-commits_ratio, code-smells_ncloc, cognitive-complexity_ncloc
+test = Test()
+printDiagrams = PrintDiagramms()
+# Normality Test
+# test.normalityTest(metrics.getMetricWithoutInf("bug-fix-commits_ratio"))
+
+# Kruskal-Wallis Test
+# test.testHypothesis(metrics.getMetricWithoutInf("avg_bug-issue_time"), 0.0125)
+# test.testHypothesis(metrics.getMetricWithoutInf("bug-fix-commits_ratio"), 0.0125)
+# test.testHypothesis(metrics.getMetricWithoutInf("code-smells_ncloc"), 0.0125)
+# test.testHypothesis(metrics.getMetricWithoutInf("cognitive-complexity_ncloc"), 0.0125)
+
+# PRINT BOXPLOTS AND VALUES
+# commaSeparatedValues.sumColumn("commits_count", "PromiseReposCharacteristics.csv")
+# printDiagrams.getMean("cognitive-complexity_ncloc", metrics.getMetricWithoutInf("cognitive-complexity_ncloc"))
+# printDiagrams.boxplot(metrics.getMetricWithoutInf("cognitive-complexity_ncloc"), "cognitive-complexity_ncloc", [1, 2, 3], ["Async/Await", "Callback", "Promise"],)

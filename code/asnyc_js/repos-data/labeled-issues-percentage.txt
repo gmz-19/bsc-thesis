@@ -1,0 +1,5 @@
+Callback: unlabeledIssues= 760, labeledIssues= 1878. Total issues= 10810, total bug issues= 2638.  0.7119029567854435% of bug issues are labeled.
+
+Promise: unlabeledIssues= 2389, labeledIssues= 694. Total issues= 13770, total bug issues= 3083.  0.22510541680181642% of bug issues are labeled.
+
+Async: unlabeledIssues= 629, labeledIssues= 734. Total issues= 7470, total bug issues= 1363.  0.5385179750550256% of bug issues are labeled.

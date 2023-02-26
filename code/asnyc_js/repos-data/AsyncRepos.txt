@@ -1,6 +1,6 @@
 {
      "language": "js",
-     "construct": "async",
+     "construct": null,
      "total_count": 975,
      "time_period": "Start date: 2013-01-01, end date: 2023-01-01",
      "incomplete_results": false,
