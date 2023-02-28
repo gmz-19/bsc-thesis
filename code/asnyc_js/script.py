@@ -2000,9 +2000,9 @@ class Test:
 
                 eta_sq = h_val / (n_sum - 1)
                 print(f"Effect size: {eta_sq}")
-                if eta_sq < 0.01:
+                if (eta_sq > 0.01) & (eta_sq < 0.06):
                     return print(f"Effect size is small.")
-                elif eta_sq < 0.06:
+                elif (eta_sq > 0.06) & (eta_sq < 0.14):
                     return print(f"Effect size is medium.")
                 else:
                     return print(f"Effect size is large.")
@@ -2180,5 +2180,5 @@ printDiagrams = PrintDiagramms()
 
 # PRINT BOXPLOTS AND VALUES
 # commaSeparatedValues.sumColumn("commits_count", "PromiseReposCharacteristics.csv")
-# printDiagrams.getMean("cognitive-complexity_ncloc", metrics.getMetricWithoutInf("cognitive-complexity_ncloc"))
-# printDiagrams.boxplot(metrics.getMetricWithoutInf("cognitive-complexity_ncloc"), "cognitive-complexity_ncloc", [1, 2, 3], ["Async/Await", "Callback", "Promise"],)
+# printDiagrams.getMean("avg_bug-issue_time", metrics.getMetricWithoutInf("avg_bug-issue_time"))
+printDiagrams.boxplot(metrics.getMetricWithoutInf("cognitive-complexity_ncloc"), "cognitive-complexity_ncloc", [1, 2, 3], ["Async/Await", "Callback", "Promise"],)
